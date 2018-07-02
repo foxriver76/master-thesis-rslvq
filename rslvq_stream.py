@@ -216,6 +216,7 @@ class RslvqStreamModel(_LvqBaseModel):
             fun = np.vectorize(lambda w: self._costf(e, w),
                                signature='(n)->()')
             pred = fun(self.w_).argmax()
+            print('predicted: ', self.c_w_[pred])
             return self.c_w_[pred]
 
         return np.vectorize(foo, signature='(n)->()')(x)

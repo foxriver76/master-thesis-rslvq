@@ -145,12 +145,14 @@ class _LvqBaseModel(BaseEstimator, ClassifierMixin):
                 
             pos = 0
             print('W-before: ', self.w_)
-#            print('nb-classes: ', nb_classes)
-#            print('train_lab: ', train_lab[0])
-            for actClass in range(nb_classes):
-                if(actClass in train_lab):
-                    nb_prot = nb_ppc[actClass]
-                    mean = np.mean(
+            print('classes: ', unique_labels(train_lab))
+            print('train_lab: ', train_lab)
+            for actClass in range(len(self.classes_)): #man müsste über unique train labels gehen
+                #TODO
+                if actClass in unique_labels(train_lab): #so ändert sich nur der erste proto -wieso?
+                    print('actClass={}, self_class={}'.format(actClass, unique_labels(train_lab)))
+                    nb_prot = nb_ppc[actClass]          #man geht aktuelld avon aus, dass es für jede act class etwas gibt
+                    mean = np.mean(             #auf dessen basis der mean berechnet wird
                         train_set[train_lab == self.classes_[actClass], :], 0)
                     self.w_[pos:pos + nb_prot] = mean + (
                             random_state.rand(nb_prot, nb_features) * 2 - 1)
