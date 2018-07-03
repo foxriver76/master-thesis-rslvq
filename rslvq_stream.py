@@ -12,17 +12,12 @@ import math
 import numpy as np
 from scipy.optimize import minimize
 from sklearn.utils import validation
-from sklearn.utils.multiclass import unique_labels
 from sklearn.utils.validation import check_is_fitted
 from lvq_stream import _LvqBaseModel
-from skmultiflow.core.utils.data_structures import InstanceWindow
-from skmultiflow.core.base import StreamModel
-
-
 
 # TODO: add sigma for every prototype
 
-class RslvqStreamModel(_LvqBaseModel):
+class RSLVQ(_LvqBaseModel):
     """Robust Soft Learning Vector Quantization
     Parameters
     ----------
@@ -65,7 +60,7 @@ class RslvqStreamModel(_LvqBaseModel):
                  sigma=0.5, max_iter=2500, gtol=1e-5,
                  display=False, max_window_size=1000,
                  random_state=None):
-        super(RslvqStreamModel, self).__init__(prototypes_per_class=prototypes_per_class,
+        super(RSLVQ, self).__init__(prototypes_per_class=prototypes_per_class,
                                          initial_prototypes=initial_prototypes,
                                          max_iter=max_iter, gtol=gtol, display=display,
                                          random_state=random_state)
@@ -135,6 +130,7 @@ class RslvqStreamModel(_LvqBaseModel):
         self.n_iter_ = res.nit
         
     def _partialOptimize(self, x, y, random_state):
+        print('begin partial optimize')
         label_equals_prototype = y
         res = minimize(
             fun=lambda vs: self._optfun(
@@ -149,7 +145,7 @@ class RslvqStreamModel(_LvqBaseModel):
                      'maxiter': self.max_iter})
         print('w-matrix: ', self.w_)
         self.w_ = res.x.reshape(self.w_.shape)
-        self.n_iter_ = res.nit  
+        self.n_iter_ = res.nit
 
     """
     def _optimize(self, x, y, random_state):

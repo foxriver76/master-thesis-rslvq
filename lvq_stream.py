@@ -146,13 +146,12 @@ class _LvqBaseModel(BaseEstimator, ClassifierMixin):
                 self.c_w_ = np.append(arr=self.c_w_,values=val_c_w, axis=0)
                 
             pos = 0
-#            print('W-before: ', self.w_)
             print('classes: ', unique_labels(train_lab))
             print('train_lab: ', train_lab)
             for actClass in range(len(self.classes_)): #man müsste über unique train labels gehen
                 #TODO
                 nb_prot = nb_ppc[actClass] # nb_ppc:  # prototypes per class
-                if actClass in unique_labels(train_lab): #so ändert sich nur der erste proto -wieso?
+                if actClass in unique_labels(train_lab): 
                     print('actClass={}, self_class={}'.format(actClass, unique_labels(train_lab)))
                               #man geht aktuelld avon aus, dass es für jede act class etwas gibt
                     mean = np.mean(             #auf dessen basis der mean berechnet wird
@@ -176,7 +175,7 @@ class _LvqBaseModel(BaseEstimator, ClassifierMixin):
                     "prototype labels and test data classes do not match\n"
                     "classes={}\n"
                     "prototype labels={}\n".format(self.classes_, self.c_w_))
-        print('W-after: ', self.w_)
+        print('W-matrix initialized: ', self.w_)
         self.initial_fit = False
         return train_set, train_lab, random_state
 
@@ -221,10 +220,7 @@ class _LvqBaseModel(BaseEstimator, ClassifierMixin):
             X, y, random_state = self._validate_train_parms(X, y)
         else:
             random_state = validation.check_random_state(self.random_state)
-#        if len(np.unique(y)) == 1:
-#            raise ValueError("fitting " + type(
-#                self).__name__ + " with only one class is not possible")
-        self._partialOptimize(X, y, random_state) # partial fit with only one stream, model shouldnt be forgotten
+        self._partialOptimize(X, y, random_state)
         return self
     
     def project(self, x, dims, print_variance_covered=False):
