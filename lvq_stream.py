@@ -25,8 +25,7 @@ class _LvqBaseModel(BaseEstimator, ClassifierMixin):
         self.gtol = gtol
         self.initial_fit = True
 
-        
-    def original_validate_train_parms(self, train_set, train_lab):
+    def _validate_train_parms(self, train_set, train_lab, partial=True):
         random_state = validation.check_random_state(self.random_state)
         if not isinstance(self.display, bool):
             raise ValueError("display must be a boolean")
@@ -37,78 +36,7 @@ class _LvqBaseModel(BaseEstimator, ClassifierMixin):
         train_set, train_lab = validation.check_X_y(train_set, train_lab)
 
         self.classes_ = unique_labels(train_lab)
-        nb_classes = len(self.classes_)
-        nb_samples, nb_features = train_set.shape  # nb_samples unused
 
-        # set prototypes per class
-        if isinstance(self.prototypes_per_class, int):
-            if self.prototypes_per_class < 0 or not isinstance(
-                    self.prototypes_per_class, int):
-                raise ValueError("prototypes_per_class must be a positive int")
-            nb_ppc = np.ones([nb_classes],
-                             dtype='int') * self.prototypes_per_class
-        else:
-            nb_ppc = validation.column_or_1d(
-                validation.check_array(self.prototypes_per_class,
-                                       ensure_2d=False, dtype='int'))
-            if nb_ppc.min() <= 0:
-                raise ValueError(
-                    "values in prototypes_per_class must be positive")
-            if nb_ppc.size != nb_classes:
-                raise ValueError(
-                    "length of prototypes per class"
-                    " does not fit the number of classes"
-                    "classes=%d"
-                    "length=%d" % (nb_classes, nb_ppc.size))
-        # initialize prototypes
-        if self.initial_prototypes is None:
-            self.w_ = np.empty([np.sum(nb_ppc), nb_features], dtype=np.double)
-            self.c_w_ = np.empty([nb_ppc.sum()], dtype=self.classes_.dtype)
-            pos = 0
-            for actClass in range(nb_classes):
-                nb_prot = nb_ppc[actClass]
-                mean = np.mean(
-                    train_set[train_lab == self.classes_[actClass], :], 0)
-                self.w_[pos:pos + nb_prot] = mean + (
-                        random_state.rand(nb_prot, nb_features) * 2 - 1)
-                self.c_w_[pos:pos + nb_prot] = self.classes_[actClass]
-                pos += nb_prot
-        else:
-            x = validation.check_array(self.initial_prototypes)
-            self.w_ = x[:, :-1]
-            self.c_w_ = x[:, -1]
-            if self.w_.shape != (np.sum(nb_ppc), nb_features):
-                raise ValueError("the initial prototypes have wrong shape\n"
-                                 "found=(%d,%d)\n"
-                                 "expected=(%d,%d)" % (
-                                     self.w_.shape[0], self.w_.shape[1],
-                                     nb_ppc.sum(), nb_features))
-            if set(self.c_w_) != set(self.classes_):
-                raise ValueError(
-                    "prototype labels and test data classes do not match\n"
-                    "classes={}\n"
-                    "prototype labels={}\n".format(self.classes_, self.c_w_))
-        return train_set, train_lab, random_state
-
-    def _validate_train_parms(self, train_set, train_lab, partial=True):
-        random_state = validation.check_random_state(self.random_state)
-        if not isinstance(self.display, bool):
-            raise ValueError("display must be a boolean")
-        if not isinstance(self.max_iter, int) or self.max_iter < 1:
-            raise ValueError("max_iter must be an positive integer")
-        if not isinstance(self.gtol, float) or self.gtol <= 0:
-            raise ValueError("gtol must be a positive float")
-        train_set, train_lab = validation.check_X_y(train_set, train_lab)
-        isNewClass = False
-        if partial == False:
-            self.classes_ = unique_labels(train_lab)
-        else:
-            newLabel = unique_labels(train_lab)
-            if hasattr(self, 'classes_') == False:
-                self.classes_ = unique_labels(train_lab)
-            elif newLabel not in self.classes_:
-                isNewClass = True
-                self.classes_.put(newLabel, newLabel)
             
         nb_classes = len(self.classes_)
         nb_samples, nb_features = train_set.shape  # nb_samples unused
@@ -136,20 +64,14 @@ class _LvqBaseModel(BaseEstimator, ClassifierMixin):
                     "length=%d" % (nb_classes, nb_ppc.size))
         # initialize prototypes
         if self.initial_prototypes is None:
-            if partial==False or hasattr(self, 'w_')==False:
-                self.w_ = np.empty([np.sum(nb_ppc), nb_features], dtype=np.double)
-                self.c_w_ = np.empty([nb_ppc.sum()], dtype=self.classes_.dtype)
-            elif isNewClass == True:
-                val_w = np.empty([np.sum(nb_ppc), nb_features], dtype=np.double)
-                self.w_ = np.append(arr=self.w_, values=val_w, axis=0)  
-                val_c_w = np.empty([nb_ppc.sum()], dtype=self.classes_.dtype)
-                self.c_w_ = np.append(arr=self.c_w_,values=val_c_w, axis=0)
+#            if partial==False or hasattr(self, 'w_')==False:
+            self.w_ = np.empty([np.sum(nb_ppc), nb_features], dtype=np.double)
+            self.c_w_ = np.empty([nb_ppc.sum()], dtype=self.classes_.dtype)
                 
             pos = 0
             print('classes: ', unique_labels(train_lab))
             print('train_lab: ', train_lab)
             for actClass in range(len(self.classes_)): #man müsste über unique train labels gehen
-                #TODO
                 nb_prot = nb_ppc[actClass] # nb_ppc:  # prototypes per class
                 if actClass in unique_labels(train_lab): 
                     print('actClass={}, self_class={}'.format(actClass, unique_labels(train_lab)))
@@ -220,7 +142,7 @@ class _LvqBaseModel(BaseEstimator, ClassifierMixin):
             X, y, random_state = self._validate_train_parms(X, y)
         else:
             random_state = validation.check_random_state(self.random_state)
-        self._partialOptimize(X, y, random_state)
+        self._optimize(X, y, random_state)
         return self
     
     def project(self, x, dims, print_variance_covered=False):

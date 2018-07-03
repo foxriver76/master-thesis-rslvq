@@ -108,46 +108,7 @@ class RSLVQ(_LvqBaseModel):
             s2 += 0.0000001
             out += math.log(s1 / s2)
         return -out
-    
-    def own_partialOptimize(self, x, y, random_state):
-        label_equals_prototype = y
-        res = minimize(
-            fun=lambda vs: self._optfun(
-                variables=vs, training_data=x,
-                label_equals_prototype=label_equals_prototype),
-            jac=lambda vs: self._optgrad(
-                variables=vs, training_data=x,
-                label_equals_prototype=label_equals_prototype,
-                random_state=random_state),
-            method='l-bfgs-b', x0=self.w_,
-            options={'disp': False, 'gtol': self.gtol,
-                     'maxiter': self.max_iter})
-        if hasattr(self, 'w_') == True:
-            print('outcommented')
-            #self.w_ = np.append(arr=self.w_, values=res.x.reshape(self.w_.shape), axis=0)
-        else:
-            self.w_ = res.x.reshape(self.w_.shape)
-        self.n_iter_ = res.nit
-        
-    def _partialOptimize(self, x, y, random_state):
-        print('begin partial optimize')
-        label_equals_prototype = y
-        res = minimize(
-            fun=lambda vs: self._optfun(
-                variables=vs, training_data=x,
-                label_equals_prototype=label_equals_prototype),
-            jac=lambda vs: self._optgrad(
-                variables=vs, training_data=x,
-                label_equals_prototype=label_equals_prototype,
-                random_state=random_state),
-            method='l-bfgs-b', x0=self.w_,
-            options={'disp': False, 'gtol': self.gtol,
-                     'maxiter': self.max_iter})
-        print('w-matrix: ', self.w_)
-        self.w_ = res.x.reshape(self.w_.shape)
-        self.n_iter_ = res.nit
 
-    """
     def _optimize(self, x, y, random_state):
         label_equals_prototype = y
         res = minimize(
@@ -163,8 +124,7 @@ class RSLVQ(_LvqBaseModel):
                      'maxiter': self.max_iter})
         self.w_ = res.x.reshape(self.w_.shape)
         self.n_iter_ = res.nit
-        """
-        
+     
     def _costf(self, x, w, **kwargs):
         d = (x - w)[np.newaxis].T
         d = d.T.dot(d)
@@ -243,32 +203,3 @@ class RSLVQ(_LvqBaseModel):
         s2 = sum([self._costf(x, w) for w in self.w_])
         return s1 / s2
     
-    
-"""Internals"""
-    
-def get_dimensions(X):
-    """ Return the dimensions from a numpy.array, numpy.ndarray or list.
-
-    Parameters
-    ----------
-    X: numpy.array, numpy.ndarray, list, list of lists.
-    
-    Returns
-    -------
-    tuple
-        A tuple representing the X structure's dimensions.
-    """
-    r, c = 1, 1
-    if isinstance(X, type(np.array([0]))):
-        if X.ndim > 1:
-            r, c = X.shape
-        else:
-            r, c = 1, X.size
-
-    elif isinstance(X, type([])):
-        if isinstance(X[0], type([])):
-            r, c = len(X), len(X[0])
-        else:
-            c = len(X)
-
-    return r, c
