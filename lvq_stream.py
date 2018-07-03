@@ -15,7 +15,7 @@ from skmultiflow.core.base import StreamModel
 
 
 
-class _LvqBaseModel(StreamModel, BaseEstimator, ClassifierMixin):
+class _LvqBaseModel(ClassifierMixin, StreamModel, BaseEstimator):
 
     def __init__(self, prototypes_per_class=1, initial_prototypes=None,
                  max_iter=2500, gtol=1e-5, display=False, random_state=None):

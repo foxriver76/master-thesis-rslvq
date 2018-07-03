@@ -18,7 +18,6 @@ from skmultiflow.classification.lazy.knn import KNN
 from rslvq_stream import RSLVQ
 from sklearn.linear_model import SGDClassifier
 from skmultiflow.classification.naive_bayes import NaiveBayes
-import time
 
 """1. Create a stream"""
 #stream = AGRAWALGenerator()
@@ -30,11 +29,11 @@ stream.prepare_for_use() # prepare stream, has to be done before use
 
 """2. Instantiate the HoeffdingTree classifier"""
 # ht = HoeffdingTree() # new classifier with default params
-#clf = RSLVQ(prototypes_per_class=4, max_iter=10)
+clf = RSLVQ(prototypes_per_class=4, max_iter=10)
 #clf = NaiveBayes()
 #clf = ARFHoeffdingTree()
 #clf = HoeffdingTree(max_byte_size=633554432223, memory_estimate_period=2000000)
-clf = KNN()
+#clf = KNN()
 
 """3. Setup the evaluator"""
 evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the process

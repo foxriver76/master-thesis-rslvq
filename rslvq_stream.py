@@ -206,27 +206,6 @@ class RSLVQ(_LvqBaseModel):
     def get_info(self):
         return 'RSLVQ N/A'
     
-    def score(self, X, y):
-        """ score
-
-        Returns the predict performance for the samples in X.
-
-        Parameters
-        ----------
-        X: numpy.ndarray of shape (n_sample, n_features)
-            The features matrix.
-
-        y: Array-like
-            An array-like containing the class labels for all samples in X.
-
-        Returns
-        -------
-        float
-            The classifier's score.
-
-        """
-        return 'Not implemented'
-    
     def predict_proba(self, X):
         """ predict_proba
         
