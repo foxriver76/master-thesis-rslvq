@@ -203,3 +203,53 @@ class RSLVQ(_LvqBaseModel):
         s2 = sum([self._costf(x, w) for w in self.w_])
         return s1 / s2
     
+    def get_info(self):
+        return 'RSLVQ N/A'
+    
+    def score(self, X, y):
+        """ score
+
+        Returns the predict performance for the samples in X.
+
+        Parameters
+        ----------
+        X: numpy.ndarray of shape (n_sample, n_features)
+            The features matrix.
+
+        y: Array-like
+            An array-like containing the class labels for all samples in X.
+
+        Returns
+        -------
+        float
+            The classifier's score.
+
+        """
+        return 'Not implemented'
+    
+    def predict_proba(self, X):
+        """ predict_proba
+        
+        Predicts the probability of each sample belonging to each one of the 
+        known target_values.
+        
+        Parameters
+        ----------
+        X: Numpy.ndarray of shape (n_samples, n_features)
+            A matrix of the samples we want to predict.
+        
+        Returns
+        -------
+        numpy.ndarray
+            An array of shape (n_samples, n_features), in which each outer entry is 
+            associated with the X entry of the same index. And where the list in 
+            index [i] contains len(self.target_values) elements, each of which represents
+            the probability that the i-th sample of X belongs to a certain label.
+        
+        """
+        return 'Not implemented'
+    
+    def reset(self):
+        return 'Not implemented'
+        
+    

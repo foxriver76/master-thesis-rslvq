@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from skmultiflow.data.generators.waveform_generator import WaveformGenerator
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
 from skmultiflow.classification.naive_bayes import NaiveBayes
