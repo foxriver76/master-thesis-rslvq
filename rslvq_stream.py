@@ -69,10 +69,7 @@ class RslvqStreamModel(_LvqBaseModel):
                                          initial_prototypes=initial_prototypes,
                                          max_iter=max_iter, gtol=gtol, display=display,
                                          random_state=random_state)
-        self.sigma = sigma
-        self.max_window_size = max_window_size #copy
-        self.window = InstanceWindow(max_size=max_window_size, dtype=float) #copy
-        
+        self.sigma = sigma        
 
 
     def _optgrad(self, variables, training_data, label_equals_prototype,
@@ -150,6 +147,7 @@ class RslvqStreamModel(_LvqBaseModel):
             method='l-bfgs-b', x0=self.w_,
             options={'disp': False, 'gtol': self.gtol,
                      'maxiter': self.max_iter})
+        print('w-matrix: ', self.w_)
         self.w_ = res.x.reshape(self.w_.shape)
         self.n_iter_ = res.nit  
 

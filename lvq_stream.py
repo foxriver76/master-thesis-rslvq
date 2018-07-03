@@ -23,6 +23,8 @@ class _LvqBaseModel(BaseEstimator, ClassifierMixin):
         self.display = display
         self.max_iter = max_iter
         self.gtol = gtol
+        self.initial_fit = True
+
         
     def original_validate_train_parms(self, train_set, train_lab):
         random_state = validation.check_random_state(self.random_state)
@@ -116,7 +118,7 @@ class _LvqBaseModel(BaseEstimator, ClassifierMixin):
             if self.prototypes_per_class < 0 or not isinstance(
                     self.prototypes_per_class, int):
                 raise ValueError("prototypes_per_class must be a positive int")
-            #nb_ppc is vector of ones for each class * protos per class
+            # nb_ppc = number of protos per class
             nb_ppc = np.ones([nb_classes],
                              dtype='int') * self.prototypes_per_class
         else:
@@ -144,20 +146,21 @@ class _LvqBaseModel(BaseEstimator, ClassifierMixin):
                 self.c_w_ = np.append(arr=self.c_w_,values=val_c_w, axis=0)
                 
             pos = 0
-            print('W-before: ', self.w_)
+#            print('W-before: ', self.w_)
             print('classes: ', unique_labels(train_lab))
             print('train_lab: ', train_lab)
             for actClass in range(len(self.classes_)): #man müsste über unique train labels gehen
                 #TODO
+                nb_prot = nb_ppc[actClass] # nb_ppc:  # prototypes per class
                 if actClass in unique_labels(train_lab): #so ändert sich nur der erste proto -wieso?
                     print('actClass={}, self_class={}'.format(actClass, unique_labels(train_lab)))
-                    nb_prot = nb_ppc[actClass]          #man geht aktuelld avon aus, dass es für jede act class etwas gibt
+                              #man geht aktuelld avon aus, dass es für jede act class etwas gibt
                     mean = np.mean(             #auf dessen basis der mean berechnet wird
                         train_set[train_lab == self.classes_[actClass], :], 0)
                     self.w_[pos:pos + nb_prot] = mean + (
                             random_state.rand(nb_prot, nb_features) * 2 - 1)
                     self.c_w_[pos:pos + nb_prot] = self.classes_[actClass]
-                    pos += nb_prot
+                pos += nb_prot
         else:
             x = validation.check_array(self.initial_prototypes)
             self.w_ = x[:, :-1]
@@ -174,6 +177,7 @@ class _LvqBaseModel(BaseEstimator, ClassifierMixin):
                     "classes={}\n"
                     "prototype labels={}\n".format(self.classes_, self.c_w_))
         print('W-after: ', self.w_)
+        self.initial_fit = False
         return train_set, train_lab, random_state
 
     def fit(self, X, y):
@@ -213,7 +217,10 @@ class _LvqBaseModel(BaseEstimator, ClassifierMixin):
         --------
         self
         """
-        X, y, random_state = self._validate_train_parms(X, y)
+        if self.initial_fit == True:
+            X, y, random_state = self._validate_train_parms(X, y)
+        else:
+            random_state = validation.check_random_state(self.random_state)
 #        if len(np.unique(y)) == 1:
 #            raise ValueError("fitting " + type(
 #                self).__name__ + " with only one class is not possible")
