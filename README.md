@@ -1,5 +1,5 @@
 # multiflow-rslvq
-An  of the Robust Soft Learning Vector Quantizatin, which works with the scikit-multiflow streaming data framework.
+An implementation of the Robust Soft Learning Vector Quantizatin, which works with the scikit-multiflow streaming data framework.
 
 ## Known Issues
 The following issues could be recognized:
