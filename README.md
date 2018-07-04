@@ -8,7 +8,8 @@ The following issues could be recognized:
    - The model currently isn't compatible with the HoldoutEvaluator of scikit-multiflow (prediction dosen't seem to work)
    - When using more than one prototype per class you should limit the optimizer by the the max_iter atrribute
    - We have to remove some unnecessary logging (only simple print functions e.g. weight matrix is printed on every iteration) and unneeded files
-   
+   - On the SineGenerator Stream the algorithm is very slow and only predicting one class (see figure folder)
+
 ## To-Dos
 The main files are stream_rslvq_test.py which uses our classes RSLVQ from rslvq_stream.py which inherits from _LvqBaseModel (also modified by us and located in lvq_stream.py)
 

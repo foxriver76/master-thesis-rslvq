@@ -204,7 +204,7 @@ class RSLVQ(_LvqBaseModel):
         return s1 / s2
     
     def get_info(self):
-        return 'RSLVQ N/A'
+        return 'RSLVQ'
     
     def predict_proba(self, X):
         """ predict_proba
@@ -229,6 +229,5 @@ class RSLVQ(_LvqBaseModel):
         return 'Not implemented'
     
     def reset(self):
-        return 'Not implemented'
-        
+        self.__init__()        
     
