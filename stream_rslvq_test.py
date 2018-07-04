@@ -32,18 +32,17 @@ stream = WaveformGenerator() # generate Stream 21 numeric attributes 3 classes
 stream.prepare_for_use() # prepare stream, has to be done before use
 
 """2. Instantiate the HoeffdingTree classifier"""
-# ht = HoeffdingTree() # new classifier with default params
-clf = RSLVQ(prototypes_per_class=4, max_iter=10)
+clf = HoeffdingTree() # new classifier with default params
+#clf = RSLVQ(prototypes_per_class=1, max_iter=10)
 #clf = NaiveBayes()
 #clf = ARFHoeffdingTree()
-#clf = HoeffdingTree()
 #clf = KNN()
 
 """3. Setup the evaluator"""
 evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the process
-                                pretrain_size=500,
+                                pretrain_size=5,
                                 max_samples=40000,
-                                metrics=['performance', 'kappa']) # eval parameter
+                                metrics=['performance', 'kappa', 'true_vs_predicts']) # eval parameter
 #evaluator = EvaluateHoldout(max_samples=20000, batch_size=1, n_wait=10000, max_time=1000,
 #                                 output_file=None, show_plot=True, metrics=['kappa', 'performance'],
 #                                 test_size=5000, dynamic_test_set=True)
@@ -59,6 +58,7 @@ evaluator.evaluate(stream=stream, model=clf) #executes the eval process without 
 #        update the classifier (using partial_fit())
 #Update the evaluation results and plot
 
-print('correct classified labels: ', evaluator.global_classification_metrics[0].well_classified_labels)
-print('incorrect classified labels: ', evaluator.global_classification_metrics[0].false_classified_labels)
-print('All predicted labels: ', evaluator.global_classification_metrics[0].all_predicted_labels)
+# Some information which can be printed
+correct_classified_labels = evaluator.global_classification_metrics[0].well_classified_labels
+wrong_classified_labels = evaluator.global_classification_metrics[0].false_classified_labels
+all_predicted_labels = evaluator.global_classification_metrics[0].all_predicted_labels

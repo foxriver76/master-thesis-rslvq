@@ -176,7 +176,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             fun = np.vectorize(lambda w: self._costf(e, w),
                                signature='(n)->()')
             pred = fun(self.w_).argmax()
-            print('predicted: ', self.c_w_[pred])
+#            print('predicted: ', self.c_w_[pred])
             return self.c_w_[pred]
 
         return np.vectorize(foo, signature='(n)->()')(x)
@@ -286,7 +286,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             for actClass in range(len(self.classes_)): #man müsste über unique train labels gehen
                 nb_prot = nb_ppc[actClass] # nb_ppc:  # prototypes per class
                 if actClass in unique_labels(train_lab): 
-                    print('actClass={}, self_class={}'.format(actClass, unique_labels(train_lab)))
+                    print('actClass={}, all_classes={}'.format(actClass, unique_labels(train_lab)))
                               #man geht aktuelld avon aus, dass es für jede act class etwas gibt
                     mean = np.mean(             #auf dessen basis der mean berechnet wird
                         train_set[train_lab == self.classes_[actClass], :], 0)
