@@ -42,7 +42,7 @@ clf = HoeffdingTree() # new classifier with default params
 evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the process
                                 pretrain_size=5,
                                 max_samples=40000,
-                                metrics=['performance', 'kappa', 'true_vs_predicts']) # eval parameter
+                                metrics=['performance', 'kappa']) # eval parameter
 #evaluator = EvaluateHoldout(max_samples=20000, batch_size=1, n_wait=10000, max_time=1000,
 #                                 output_file=None, show_plot=True, metrics=['kappa', 'performance'],
 #                                 test_size=5000, dynamic_test_set=True)
