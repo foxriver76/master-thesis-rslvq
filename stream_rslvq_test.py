@@ -23,24 +23,24 @@ from skmultiflow.classification.naive_bayes import NaiveBayes
 
 """1. Create a stream"""
 #stream = AGRAWALGenerator()
-stream = WaveformGenerator() # generate Stream 21 numeric attributes 3 classes
+#stream = WaveformGenerator() # generate Stream 21 numeric attributes 3 classes
 #stream = RandomRBFGeneratorDrift(sample_random_state = 50, 
 #                                 n_classes = 2, n_features = 10, n_centroids = 50, 
 #                                 change_speed=0.5, num_drift_centroids=50)
 #stream = SEAGenerator()
-#stream = SineGenerator()
+stream = SineGenerator()
 stream.prepare_for_use() # prepare stream, has to be done before use
 
 """2. Instantiate the HoeffdingTree classifier"""
-clf = HoeffdingTree() # new classifier with default params
-#clf = RSLVQ(prototypes_per_class=1, max_iter=10)
+#clf = HoeffdingTree() # new classifier with default params
+clf = RSLVQ(prototypes_per_class=4, max_iter=300)
 #clf = NaiveBayes()
 #clf = ARFHoeffdingTree()
 #clf = KNN()
 
 """3. Setup the evaluator"""
 evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the process
-                                pretrain_size=5,
+                                pretrain_size=250,
                                 max_samples=40000,
                                 metrics=['performance', 'kappa']) # eval parameter
 #evaluator = EvaluateHoldout(max_samples=20000, batch_size=1, n_wait=10000, max_time=1000,
