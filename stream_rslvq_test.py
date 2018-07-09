@@ -28,7 +28,7 @@ from skmultiflow.classification.naive_bayes import NaiveBayes
 #                                 n_classes = 2, n_features = 10, n_centroids = 50, 
 #                                 change_speed=0.5, num_drift_centroids=50)
 stream = SEAGenerator()
-#stream = SineGenerator() # 500 iterations and 8 protos = 70.5 acc, pretrain=250
+#stream = SineGenerator() # 500 iterations and 8 protos = 70.5 acc, pretrain=250 !sine has concept drift
 stream.prepare_for_use() # prepare stream, has to be done before use
 
 """2. Instantiate the HoeffdingTree classifier"""
