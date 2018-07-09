@@ -56,7 +56,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         Prototype classes
     classes_ : array-like, shape = [n_classes]
         Array containing labels.
-    initial_fit: boolean, indicator for initial fitting. Set to false after
+    initial_fit : boolean, indicator for initial fitting. Set to false after
         first call of fit/partial fit.
     """
 
@@ -117,20 +117,20 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         return -out
 
     def _optimize(self, x, y, random_state):
-        label_equals_prototype = y
         res = minimize(
             fun=lambda vs: self._optfun(
                 variables=vs, training_data=x,
-                label_equals_prototype=label_equals_prototype),
+                label_equals_prototype=y),
             jac=lambda vs: self._optgrad(
                 variables=vs, training_data=x,
-                label_equals_prototype=label_equals_prototype,
+                label_equals_prototype=y,
                 random_state=random_state),
             method='l-bfgs-b', x0=self.w_,
             options={'disp': False, 'gtol': self.gtol,
                      'maxiter': self.max_iter})
         self.w_ = res.x.reshape(self.w_.shape)
         self.n_iter_ = res.nit
+        print('debug iter: ', self.n_iter_)
      
     def _costf(self, x, w, **kwargs):
         d = (x - w)[np.newaxis].T
@@ -167,9 +167,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         """
         check_is_fitted(self, ['w_', 'c_w_'])
         x = validation.check_array(x)
-#        print('Weight Matrix for Pred: ', self.w_)
-#        print('prototype classes: ' , self.c_w_)
-#        print('classes: ', self.classes_)
+        
         if x.shape[1] != self.w_.shape[1]:
             raise ValueError("X has wrong number of features\n"
                              "found=%d\n"
@@ -316,7 +314,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         self.initial_fit = False
         return train_set, train_lab, random_state
 
-    def fit(self, X, y):
+    def fit(self, X, y, classes=None):
             """Fit the LVQ model to the given training data and parameters using
             l-bfgs-b.
             Parameters
@@ -331,7 +329,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             --------
             self
             """
-            X, y, random_state = self._validate_train_parms(X, y)
+            X, y, random_state = self._validate_train_parms(X, y, classes=classes)
             if len(np.unique(y)) == 1:
                 raise ValueError("fitting " + type(
                     self).__name__ + " with only one class is not possible")
@@ -364,24 +362,4 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         self._optimize(X, y, random_state)
         print('Weight-matrix debug: \n', self.w_)
         return self
-    
-    def project(self, x, dims, print_variance_covered=False):
-        """Projects the data input data X using the relevance matrix of trained
-        model to dimension dim
-        Parameters
-        ----------
-        x : array-like, shape = [n,n_features]
-          input data for project
-        dims : int
-          dimension to project to
-        print_variance_covered : boolean
-          flag to print the covered variance of the projection
-        Returns
-        --------
-        C : array, shape = [n,n_features]
-            Returns predicted values.
-        """
-        if print_variance_covered:
-            print('not implemented!')
-        return x[:, :dims]
     
