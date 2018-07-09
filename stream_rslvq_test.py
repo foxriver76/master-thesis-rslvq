@@ -27,13 +27,14 @@ from skmultiflow.classification.naive_bayes import NaiveBayes
 #stream = RandomRBFGeneratorDrift(sample_random_state = 50, 
 #                                 n_classes = 2, n_features = 10, n_centroids = 50, 
 #                                 change_speed=0.5, num_drift_centroids=50)
-#stream = SEAGenerator()
-stream = SineGenerator() # 500 iterations and 8 protos = 70.5 acc, pretrain=250
+stream = SEAGenerator()
+#stream = SineGenerator() # 500 iterations and 8 protos = 70.5 acc, pretrain=250
 stream.prepare_for_use() # prepare stream, has to be done before use
 
 """2. Instantiate the HoeffdingTree classifier"""
 #clf = HoeffdingTree() # new classifier with default params
-clf = [RSLVQ(prototypes_per_class=1, max_iter=500), NaiveBayes()]
+#clf = [RSLVQ(prototypes_per_class=1, max_iter=500), NaiveBayes()]
+clf = RSLVQ(prototypes_per_class=1, max_iter=500)
 #clf = NaiveBayes()
 #clf = ARFHoeffdingTree()
 #clf = KNN()
@@ -50,8 +51,8 @@ evaluator = EvaluateHoldout(max_samples=40000, batch_size=200, n_wait=10000, max
                                  test_size=10000, dynamic_test_set=True)
 
 """4. Run evaluation"""
-evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQ', 'NaiveBayes']) #executes the eval process without it nothing happens
-
+#evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQ', 'NaiveBayes']) #executes the eval process without it nothing happens
+evaluator.evaluate(stream=stream, model=clf)
 #Eval does the following things: Check if there are samples in the stream
 #
 #Pass the next sample to the classifier:
