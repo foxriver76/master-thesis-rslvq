@@ -28,27 +28,29 @@ from skmultiflow.classification.naive_bayes import NaiveBayes
 #                                 n_classes = 2, n_features = 10, n_centroids = 50, 
 #                                 change_speed=0.5, num_drift_centroids=50)
 #stream = SEAGenerator()
-stream = SineGenerator()
+stream = SineGenerator() # 500 iterations and 8 protos = 70.5 acc, pretrain=250
 stream.prepare_for_use() # prepare stream, has to be done before use
 
 """2. Instantiate the HoeffdingTree classifier"""
 #clf = HoeffdingTree() # new classifier with default params
-clf = RSLVQ(prototypes_per_class=4, max_iter=300)
+clf = [RSLVQ(prototypes_per_class=1, max_iter=500), NaiveBayes()]
 #clf = NaiveBayes()
 #clf = ARFHoeffdingTree()
 #clf = KNN()
 
 """3. Setup the evaluator"""
-evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the process
-                                pretrain_size=250,
-                                max_samples=40000,
-                                metrics=['performance', 'kappa']) # eval parameter
-#evaluator = EvaluateHoldout(max_samples=20000, batch_size=1, n_wait=10000, max_time=1000,
-#                                 output_file=None, show_plot=True, metrics=['kappa', 'performance'],
-#                                 test_size=5000, dynamic_test_set=True)
+#evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the process
+#                                pretrain_size=250,
+#                                max_samples=40000,
+#                                metrics=['performance', 'kappa', 'true_vs_predicts']) # eval parameter
+evaluator = EvaluateHoldout(max_samples=40000, batch_size=200, n_wait=10000, max_time=1000,
+                                 output_file=None, show_plot=True, metrics=['kappa', 
+                                                                            'performance',
+                                                                            'true_vs_predicts'],
+                                 test_size=10000, dynamic_test_set=True)
 
 """4. Run evaluation"""
-evaluator.evaluate(stream=stream, model=clf) #executes the eval process without it nothing happens
+evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQ', 'NaiveBayes']) #executes the eval process without it nothing happens
 
 #Eval does the following things: Check if there are samples in the stream
 #
@@ -57,8 +59,3 @@ evaluator.evaluate(stream=stream, model=clf) #executes the eval process without 
 #        test the classifier (using predict())
 #        update the classifier (using partial_fit())
 #Update the evaluation results and plot
-
-# Some information which can be printed
-correct_classified_labels = evaluator.global_classification_metrics[0].well_classified_labels
-wrong_classified_labels = evaluator.global_classification_metrics[0].false_classified_labels
-all_predicted_labels = evaluator.global_classification_metrics[0].all_predicted_labels

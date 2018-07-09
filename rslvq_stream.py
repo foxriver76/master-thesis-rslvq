@@ -44,6 +44,9 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         If RandomState instance, random_state is the random number generator;
         If None, the random number generator is the RandomState instance used
         by `np.random`.
+    gradient_descent : string, Gradient Descent describes the used technique
+        to perform the gradient descent. Possible values: 'SGD' (default),
+        'RMSprop', 'Adadelta'. Currently only SGD is implemented.
     Attributes
     ----------
     w_ : array-like, shape = [n_prototypes, n_features]
@@ -53,15 +56,13 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         Prototype classes
     classes_ : array-like, shape = [n_classes]
         Array containing labels.
-    See also
-    --------
-    MrslvqModel, LmrslvqModel
+    initial_fit: boolean, indicator for initial fitting. Set to false after
+        first call of fit (currently only by partial_fit).
     """
 
     def __init__(self, prototypes_per_class=1, initial_prototypes=None,
                  sigma=0.5, max_iter=2500, gtol=1e-5,
-                 display=False, max_window_size=1000,
-                 random_state=None):
+                 display=False, random_state=None, gradient_descent='SGD'):
 
         self.sigma = sigma
         self.random_state = random_state
@@ -70,8 +71,9 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         self.display = display
         self.max_iter = max_iter
         self.gtol = gtol
-        self.initial_fit = True        
-
+        self.initial_fit = True
+        self.gradient_descent = gradient_descent
+        self.classes_ = []
 
     def _optgrad(self, variables, training_data, label_equals_prototype,
                  random_state):
@@ -167,6 +169,8 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         check_is_fitted(self, ['w_', 'c_w_'])
         x = validation.check_array(x)
 #        print('Weight Matrix for Pred: ', self.w_)
+#        print('prototype classes: ' , self.c_w_)
+#        print('classes: ', self.classes_)
         if x.shape[1] != self.w_.shape[1]:
             raise ValueError("X has wrong number of features\n"
                              "found=%d\n"
@@ -176,7 +180,6 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             fun = np.vectorize(lambda w: self._costf(e, w),
                                signature='(n)->()')
             pred = fun(self.w_).argmax()
-#            print('predicted: ', self.c_w_[pred])
             return self.c_w_[pred]
 
         return np.vectorize(foo, signature='(n)->()')(x)
@@ -237,7 +240,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
     def reset(self):
         self.__init__()
         
-    def _validate_train_parms(self, train_set, train_lab, partial=True):
+    def _validate_train_parms(self, train_set, train_lab):
         random_state = validation.check_random_state(self.random_state)
         if not isinstance(self.display, bool):
             raise ValueError("display must be a boolean")
@@ -248,8 +251,6 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         train_set, train_lab = validation.check_X_y(train_set, train_lab)
 
         self.classes_ = unique_labels(train_lab)
-
-            
         nb_classes = len(self.classes_)
         nb_samples, nb_features = train_set.shape  # nb_samples unused
 
@@ -276,7 +277,6 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                     "length=%d" % (nb_classes, nb_ppc.size))
         # initialize prototypes
         if self.initial_prototypes is None:
-#            if partial==False or hasattr(self, 'w_')==False:
             self.w_ = np.empty([np.sum(nb_ppc), nb_features], dtype=np.double)
             self.c_w_ = np.empty([nb_ppc.sum()], dtype=self.classes_.dtype)
                 
@@ -287,7 +287,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                 nb_prot = nb_ppc[actClass] # nb_ppc:  # prototypes per class
                 if actClass in unique_labels(train_lab): 
                     print('actClass={}, all_classes={}'.format(actClass, unique_labels(train_lab)))
-                              #man geht aktuelld avon aus, dass es für jede act class etwas gibt
+                              #man geht aktuell davon aus, dass es für jede act class etwas gibt
                     mean = np.mean(             #auf dessen basis der mean berechnet wird
                         train_set[train_lab == self.classes_[actClass], :], 0)
                     self.w_[pos:pos + nb_prot] = mean + (
@@ -352,8 +352,12 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         """
         if self.initial_fit == True:
             X, y, random_state = self._validate_train_parms(X, y)
+        elif unique_labels(y) not in self.classes_:
+            raise ValueError('Class {} was not learned - please learn all \
+                             classes in first call of fit/partial_fit'.format(y))
         else:
             random_state = validation.check_random_state(self.random_state)
+            
         self._optimize(X, y, random_state)
         return self
     
