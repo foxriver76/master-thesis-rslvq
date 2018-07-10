@@ -254,7 +254,8 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                 self.protos_initialized = np.zeros(self.classes_.size)
             else:
                 self.classes_ = unique_labels(train_lab)
-            
+                self.protos_initialized = np.zeros(self.classes_.size)
+
         nb_classes = len(self.classes_)
         nb_samples, nb_features = train_set.shape  # nb_samples unused
 
@@ -285,7 +286,6 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             if self.initial_fit:
                 self.w_ = np.empty([np.sum(nb_ppc), nb_features], dtype=np.double)
                 self.c_w_ = np.empty([nb_ppc.sum()], dtype=self.classes_.dtype)
-            # TODO: when batch size/pretrain size is 1, the other protos will be initialized badly
             pos = 0
             print('classes: ', unique_labels(train_lab))
             print('train_lab: ', train_lab)
