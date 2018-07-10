@@ -73,6 +73,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         self.gtol = gtol
         self.initial_fit = True
         self.gradient_descent = gradient_descent
+        self.classes_ = []
 
     def _optgrad(self, variables, training_data, label_equals_prototype,
                  random_state):
@@ -153,7 +154,6 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         return o
 
     def predict(self, x):
-        # copy from knn
         """Predict class membership index for each input sample.
         This function does classification on an array of
         test vectors X.
@@ -247,11 +247,13 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             raise ValueError("gtol must be a positive float")
         train_set, train_lab = validation.check_X_y(train_set, train_lab)
 
-        if(classes):
-            self.classes_ = np.asarray(classes)
-            print('classes det: ', self.classes_)
-        else:
-            self.classes_ = unique_labels(train_lab)
+        if(self.initial_fit):
+            if(classes):
+                self.classes_ = np.asarray(classes)
+                print('classes det: ', self.classes_)
+                self.protos_initialized = np.zeros(self.classes_.size)
+            else:
+                self.classes_ = unique_labels(train_lab)
             
         nb_classes = len(self.classes_)
         nb_samples, nb_features = train_set.shape  # nb_samples unused
@@ -277,23 +279,33 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                     " does not fit the number of classes"
                     "classes=%d"
                     "length=%d" % (nb_classes, nb_ppc.size))
+        
         # initialize prototypes
         if self.initial_prototypes is None:
-            self.w_ = np.empty([np.sum(nb_ppc), nb_features], dtype=np.double)
-            self.c_w_ = np.empty([nb_ppc.sum()], dtype=self.classes_.dtype)
+            if self.initial_fit:
+                self.w_ = np.empty([np.sum(nb_ppc), nb_features], dtype=np.double)
+                self.c_w_ = np.empty([nb_ppc.sum()], dtype=self.classes_.dtype)
             # TODO: when batch size/pretrain size is 1, the other protos will be initialized badly
             pos = 0
             print('classes: ', unique_labels(train_lab))
             print('train_lab: ', train_lab)
-            for actClass in range(len(self.classes_)): #man müsste über unique train labels gehen
+            for actClass in range(len(self.classes_)):
                 nb_prot = nb_ppc[actClass] # nb_ppc:  # prototypes per class
-                print('actClass={}, all_classes={}'.format(actClass, unique_labels(train_lab)))
-                          #man geht aktuell davon aus, dass es für jede act class etwas gibt
-                mean = np.mean(             #auf dessen basis der mean berechnet wird
-                    train_set[train_lab == self.classes_[actClass], :], 0)
-                self.w_[pos:pos + nb_prot] = mean + (
-                        random_state.rand(nb_prot, nb_features) * 2 - 1)
-                self.c_w_[pos:pos + nb_prot] = self.classes_[actClass]
+                if(self.protos_initialized[actClass] == 0 and actClass in unique_labels(train_lab)):
+                    print('protos for {} will be initialized now'.format(actClass))
+                    print('actClass={}, all_classes={}'.format(actClass, unique_labels(train_lab)))
+                              #man geht aktuell davon aus, dass es für jede act class etwas gibt
+                    mean = np.mean(             #auf dessen basis der mean berechnet wird
+                        train_set[train_lab == self.classes_[actClass], :], 0)
+                    self.w_[pos:pos + nb_prot] = mean + (
+                            random_state.rand(nb_prot, nb_features) * 2 - 1)
+                    if math.isnan(self.w_[pos, 0]):
+                        print('null: ', actClass)
+                        self.protos_initialized[actClass] = 0
+                    else:
+                        self.protos_initialized[actClass] = 1
+    
+                    self.c_w_[pos:pos + nb_prot] = self.classes_[actClass]
                 pos += nb_prot
         else:
             x = validation.check_array(self.initial_prototypes)
@@ -310,8 +322,10 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                     "prototype labels and test data classes do not match\n"
                     "classes={}\n"
                     "prototype labels={}\n".format(self.classes_, self.c_w_))
-        print('W-matrix initialized: ', self.w_)
-        self.initial_fit = False
+        if self.initial_fit:
+            self.initial_fit = False
+            print('W-matrix initialized: \n', self.w_)
+
         return train_set, train_lab, random_state
 
     def fit(self, X, y, classes=None):
@@ -351,13 +365,11 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         --------
         self
         """
-        if self.initial_fit == True:
+        if unique_labels(y) in self.classes_ or self.initial_fit == True:
             X, y, random_state = self._validate_train_parms(X, y, classes=classes)
-        elif unique_labels(y) not in self.classes_:
-            raise ValueError('Class {} was not learned - please learn all \
-                             classes in first call of fit/partial_fit'.format(y))
         else:
-            random_state = validation.check_random_state(self.random_state)
+            raise ValueError('Class {} was not learned - please declare all \
+                             classes in first call of fit/partial_fit'.format(y))
             
         self._optimize(X, y, random_state)
         print('Weight-matrix debug: \n', self.w_)
