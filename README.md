@@ -13,10 +13,8 @@ The main file is stream_rslvq_test.py which uses our class RSLVQ from rslvq_stre
 
 For To-Dos check the following tasks:
    
-   - Enable compatibility to HoldoutEvaluator
    - Add RMSprop and Adadelta as optimization algorithms for the gradient descent (choosable via a parameter e.g. optimizer='RMSprop') 
    - Remove unneeded files & testing files from Git
-   - Add correct Prototype initilization when data for the label isn't included in initial fitting
    - Remove unnecessary logging
    - Check predicting on Sine Generator (see figure/naive_bayes_on_sine_generator_40k.png vs figure/rslvq_on_sine_generator_40k.png)
       --> it seems to be a hyperparameter optimization problem, not an implmentation one/also Sine has concept drift
