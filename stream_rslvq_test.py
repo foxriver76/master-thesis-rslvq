@@ -38,7 +38,7 @@ stream.prepare_for_use() # prepare stream, has to be done before use
 
 """2. Instantiate the HoeffdingTree classifier"""
 #clf = HoeffdingTree() # new classifier with default params
-clf = [RSLVQ(prototypes_per_class=2, max_iter=500), NaiveBayes()]
+clf = [RSLVQ(prototypes_per_class=2, max_iter=500, gradient_descent='SGD'), NaiveBayes()]
 #clf = RSLVQ(prototypes_per_class=2, max_iter=500, sigma=0.7)
 #clf = NaiveBayes()
 #clf = ARFHoeffdingTree()

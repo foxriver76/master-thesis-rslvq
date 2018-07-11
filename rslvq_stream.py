@@ -63,7 +63,6 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
     def __init__(self, prototypes_per_class=1, initial_prototypes=None,
                  sigma=0.5, max_iter=2500, gtol=1e-5,
                  display=False, random_state=None, gradient_descent='SGD'):
-
         self.sigma = sigma
         self.random_state = random_state
         self.initial_prototypes = initial_prototypes
@@ -72,7 +71,14 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         self.max_iter = max_iter
         self.gtol = gtol
         self.initial_fit = True
-        self.gradient_descent = gradient_descent
+        allowed_gradient_descent = ['SGD', 'RMSprop', 'Adadelta']
+        if gradient_descent in allowed_gradient_descent:
+            self.gradient_descent = gradient_descent
+        else:
+            raise ValueError('{} is not a valid parameter for '
+                             'gradient_descent, please use one '
+                             'of the following parameters:\n {}'
+                             .format(gradient_descent, allowed_gradient_descent))
         self.classes_ = []
 
     def _optgrad(self, variables, training_data, label_equals_prototype,
