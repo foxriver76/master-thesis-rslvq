@@ -16,6 +16,11 @@ from skmultiflow.core.base import StreamModel
 from scipy.optimize import minimize
 from sklearn.utils import validation
 from sklearn.utils.validation import check_is_fitted
+#####
+from revrand.optimize.sgd import AdaDelta
+from revrand.optimize import sgd
+from revrand.optimize.decorators import logtrick_sgd
+from revrand.btypes import Bound, Positive
 
 # TODO: add sigma for every prototype (TODO from https://github.com/MrNuggelz/sklearn-lvq)
 
@@ -124,23 +129,29 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         return -out
 
     def _optimize(self, x, y, random_state):
-        res = minimize(
-            fun=lambda vs: self._optfun(
-                variables=vs, training_data=x,
-                label_equals_prototype=y),
-            jac=lambda vs: self._optgrad(
-                variables=vs, training_data=x,
-                label_equals_prototype=y,
-                random_state=random_state),
-            method='l-bfgs-b', x0=self.w_,
-            options={'disp': False, 'gtol': self.gtol,
-                     'maxiter': self.max_iter})
-        self.w_ = res.x.reshape(self.w_.shape)
-        self.n_iter_ = res.nit
-        print('debug iter: ', self.n_iter_)
+        if(self.gradient_descent=='SGD'):
+            res = minimize(
+                fun=lambda vs: self._optfun(
+                    variables=vs, training_data=x,
+                    label_equals_prototype=y),
+                jac=lambda vs: self._optgrad(
+                    variables=vs, training_data=x,
+                    label_equals_prototype=y,
+                    random_state=random_state),
+                method='l-bfgs-b', x0=self.w_, 
+                options={'disp': False, 'gtol': self.gtol,
+                         'maxiter': self.max_iter})
+            self.w_ = res.x.reshape(self.w_.shape)
+            self.n_iter_ = res.nit
+            print('debug iter: ', self.n_iter_)
+            
+        elif(self.gradient_descent=='Adadelta'):            
+            raise ValueError('{} not implemented'.format(self.gradient_descent))
+        elif(self.gradient_descent=='RMSprop'):
+            raise ValueError('{} not implemented'.format(self.gradient_descent))
      
     def _costf(self, x, w, **kwargs):
-        d = (x - w)[np.newaxis].T
+        d = (x - w)[np.newaxis].T 
         d = d.T.dot(d)
         return -d / (2 * self.sigma)
 

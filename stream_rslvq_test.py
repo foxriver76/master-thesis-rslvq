@@ -38,8 +38,8 @@ stream.prepare_for_use() # prepare stream, has to be done before use
 
 """2. Instantiate the HoeffdingTree classifier"""
 #clf = HoeffdingTree() # new classifier with default params
-clf = [RSLVQ(prototypes_per_class=2, max_iter=500, gradient_descent='SGD'), NaiveBayes()]
-#clf = RSLVQ(prototypes_per_class=2, max_iter=500, sigma=0.7)
+#clf = [RSLVQ(prototypes_per_class=2, max_iter=500, gradient_descent='SGD'), NaiveBayes()]
+clf = RSLVQ(prototypes_per_class=2, max_iter=500)
 #clf = NaiveBayes()
 #clf = ARFHoeffdingTree()
 #clf = KNN()
@@ -47,7 +47,7 @@ clf = [RSLVQ(prototypes_per_class=2, max_iter=500, gradient_descent='SGD'), Naiv
 """3. Setup the evaluator"""
 evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the process
                                 pretrain_size=1,
-                                max_samples=40000,
+                                max_samples=30000,
                                 metrics=['performance', 'kappa', 'true_vs_predicts']) # eval parameter
 #evaluator = EvaluateHoldout(max_samples=40000, batch_size=1, n_wait=10000, max_time=1000,
 #                                 output_file=None, show_plot=True, metrics=['kappa', 
@@ -56,8 +56,8 @@ evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the p
 #                                 test_size=10000, dynamic_test_set=True)
 
 """4. Run evaluation"""
-evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQ', 'NaiveBayes']) #executes the eval process without it nothing happens
-#evaluator.evaluate(stream=stream, model=clf)
+#evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQ', 'NaiveBayes']) #executes the eval process without it nothing happens
+evaluator.evaluate(stream=stream, model=clf)
 #Eval does the following things: Check if there are samples in the stream
 #
 #Pass the next sample to the classifier:

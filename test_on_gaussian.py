@@ -17,10 +17,10 @@ X, y_true = make_blobs(n_samples=400, centers=4,
 X = X[:, ::-1] # flip axes for better plotting
 
 
-clf = RSLVQ()
+clf = RSLVQ(gradient_descent='Adadelta')
 labels = clf.partial_fit(X=X, y=y_true).predict(X)
 
-clf = RslvqModel(prototypes_per_class=4, max_iter=500)
-labels = clf.fit(x=X, y=y_true).predict(X)
+#clf = RslvqModel(prototypes_per_class=4, max_iter=500)
+#labels = clf.fit(x=X, y=y_true).predict(X)
 
 plt.scatter(X[:, 0], X[:, 1], c=labels, s=40, cmap='viridis');
