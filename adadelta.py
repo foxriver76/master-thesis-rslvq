@@ -28,36 +28,36 @@ def adadelta(x1, training_data, decay_rate=0.9, epsilon=1e-8, n_steps=10000):
     n_steps : int, optional (default=10000)
         Number of updates
     """
-    # Initialize accumulation variables
-    squared_mean_gradient = np.zeros_like(x1)
-    squared_mean_step = np.zeros_like(x1)
-
     x = np.asarray(x1)
-    steps = np.zeros((n_steps, x.shape[0]))
     errors = np.zeros(n_steps)
-    
-    for i in range(n_steps): # Loop over number of updates
-        # Compute gradient
-        gradient = np.gradient(x)
-        
-        # Accumulate gradient
-        squared_mean_gradient = decay_rate * squared_mean_gradient + \
-                                (1 - decay_rate) * gradient ** 2 
-        
-        # Compute update/step
-        steps[i] = (-((squared_mean_step + epsilon) / \
-                     (squared_mean_gradient + epsilon)) ** 0.5) * gradient
-        
-        # Accumulate updates
-        squared_mean_step = decay_rate * squared_mean_step + (1 - decay_rate) * steps[i] ** 2
-        
-        # TODO: Update weights according to costfunction
-        # TODO: Handle Batch_Size
-        # Apply update
-        x = x + steps[i]
-        
-        # Calculate Error
-        errors[i] = _costf(x=training_data, w=x)
+    for proto in x:
+        print(proto)
+        # Initialize accumulation variables
+        squared_mean_gradient = np.zeros_like(proto)
+        squared_mean_step = np.zeros_like(proto)
+        steps = np.zeros((n_steps, proto.shape[0])) 
+        for i in range(n_steps): # Loop over number of updates
+            # Compute gradient
+            gradient = np.gradient(proto)
+            
+            # Accumulate gradient
+            squared_mean_gradient = decay_rate * squared_mean_gradient + \
+                                    (1 - decay_rate) * gradient ** 2 
+            
+            # Compute update/step
+            steps[i] = (-((squared_mean_step + epsilon) / \
+                         (squared_mean_gradient + epsilon)) ** 0.5) * gradient
+            
+            # Accumulate updates
+            squared_mean_step = decay_rate * squared_mean_step + (1 - decay_rate) * steps[i] ** 2
+            
+            # TODO: Update weights according to costfunction (should do this in Adadelta)
+            # TODO: Handle Batch_Size
+            # Apply update
+            proto = proto + steps[i]
+            
+            # Calculate Error
+            errors[i] = _costf(x=training_data, w=proto) # _optfun should be the correct choice
          
 #    plt.plot(steps)    
 #    plt.ylabel('Absolute Step')
@@ -71,7 +71,8 @@ def adadelta(x1, training_data, decay_rate=0.9, epsilon=1e-8, n_steps=10000):
     
 
 # Execute Adadelta
-x = adadelta(x1=[0.954, 0.392, 0.376, 0.777, 0.951, 22.0], 
+x = adadelta(x1=[[0.954, 0.392, 0.376, 0.777, 0.951, 22.0], 
+                 [0.154, 0.192, 0.276, 0.977, 0.951, 22.0]], 
              training_data=[1.5, 0.5, 1.376, 5.78, 0.951, 22.0], 
              n_steps=10000, decay_rate=0.9)
 
