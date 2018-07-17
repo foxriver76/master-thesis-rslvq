@@ -16,11 +16,6 @@ from skmultiflow.core.base import StreamModel
 from scipy.optimize import minimize
 from sklearn.utils import validation
 from sklearn.utils.validation import check_is_fitted
-#####
-from revrand.optimize.sgd import AdaDelta
-from revrand.optimize import sgd
-from revrand.optimize.decorators import logtrick_sgd
-from revrand.btypes import Bound, Positive
 
 # TODO: add sigma for every prototype (TODO from https://github.com/MrNuggelz/sklearn-lvq)
 
@@ -51,7 +46,8 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         by `np.random`.
     gradient_descent : string, Gradient Descent describes the used technique
         to perform the gradient descent. Possible values: 'SGD' (default),
-        'RMSprop', 'Adadelta'. Currently only SGD is implemented.
+        'RMSprop', 'Adadelta', 'l-bfgs-b'. Currently only SGD and l-bfgs-b 
+        are implemented.
     Attributes
     ----------
     w_ : array-like, shape = [n_prototypes, n_features]
@@ -66,7 +62,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
     """
 
     def __init__(self, prototypes_per_class=1, initial_prototypes=None,
-                 sigma=0.5, max_iter=2500, gtol=1e-5,
+                 sigma=1.0, max_iter=2500, gtol=1e-5,
                  display=False, random_state=None, gradient_descent='SGD'):
         self.sigma = sigma
         self.random_state = random_state
@@ -76,7 +72,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         self.max_iter = max_iter
         self.gtol = gtol
         self.initial_fit = True
-        allowed_gradient_descent = ['SGD', 'RMSprop', 'Adadelta']
+        allowed_gradient_descent = ['SGD', 'RMSprop', 'Adadelta', 'l-bfgs-b']
         if gradient_descent in allowed_gradient_descent:
             self.gradient_descent = gradient_descent
         else:
@@ -91,7 +87,6 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         n_data, n_dim = training_data.shape
         nb_prototypes = self.c_w_.size
         prototypes = variables.reshape(nb_prototypes, n_dim)
-
         g = np.zeros(prototypes.shape)
         for i in range(n_data):
             xi = training_data[i]
@@ -129,7 +124,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         return -out
 
     def _optimize(self, x, y, random_state):
-        if(self.gradient_descent=='SGD'):
+        if(self.gradient_descent=='l-bfgs-b'):
             res = minimize(
                 fun=lambda vs: self._optfun(
                     variables=vs, training_data=x,
@@ -143,16 +138,38 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                          'maxiter': self.max_iter})
             self.w_ = res.x.reshape(self.w_.shape)
             self.n_iter_ = res.nit
-            print('debug iter: ', self.n_iter_)
             
-        elif(self.gradient_descent=='Adadelta'):            
+        elif(self.gradient_descent=='SGD'):
+            """Implementation of Stochastical Gradient Descent"""
+            n_data, n_dim = x.shape
+            nb_prototypes = self.c_w_.size
+            prototypes = self.w_.reshape(nb_prototypes, n_dim)
+
+            for i in range(n_data):
+                xi = x[i]
+                c_xi = y[i]
+                for j in range(prototypes.shape[0]):
+                    d = (xi - prototypes[j])
+                    c = 1 / self.sigma
+                    if self.c_w_[j] == c_xi:
+                        # Attract prototype to data point
+                        self.w_[j] += c * (self._p(j, xi, prototypes=self.w_, y=c_xi) -
+                                     self._p(j, xi, prototypes=self.w_)) * d
+                    else:
+                        # Distance prototype from data point
+                        self.w_[j] -= c * self._p(j, xi, prototypes=self.w_) * d
+            
+        elif(self.gradient_descent=='Adadelta'):
+            """Implementation of Adadelta"""
             raise ValueError('{} not implemented'.format(self.gradient_descent))
+        
         elif(self.gradient_descent=='RMSprop'):
+            """Implementation of RMSprop"""
             raise ValueError('{} not implemented'.format(self.gradient_descent))
      
     def _costf(self, x, w, **kwargs):
         d = (x - w)[np.newaxis].T 
-        d = d.T.dot(d)
+        d = d.T.dot(d) 
         return -d / (2 * self.sigma)
 
     def _p(self, j, e, y=None, prototypes=None, **kwargs):
@@ -160,10 +177,13 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             prototypes = self.w_
         if y is None:
             fs = [self._costf(e, w, **kwargs) for w in prototypes]
+#            print('y none fs:', fs)
         else:
             fs = [self._costf(e, prototypes[i], **kwargs) for i in
                   range(prototypes.shape[0]) if
                   self.c_w_[i] == y]
+#            print('y fs:', fs)
+
         fs_max = max(fs)
         s = sum([np.math.exp(f - fs_max) for f in fs])
         o = np.math.exp(
@@ -182,9 +202,9 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         C : array, shape = (n_samples,)
             Returns predicted values.
         """
+#        raise ValueError('lol')
         check_is_fitted(self, ['w_', 'c_w_'])
         x = validation.check_array(x)
-        
         if x.shape[1] != self.w_.shape[1]:
             raise ValueError("X has wrong number of features\n"
                              "found=%d\n"
@@ -304,8 +324,8 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                 self.w_ = np.empty([np.sum(nb_ppc), nb_features], dtype=np.double)
                 self.c_w_ = np.empty([nb_ppc.sum()], dtype=self.classes_.dtype)
             pos = 0
-            print('classes: ', unique_labels(train_lab))
-            print('train_lab: ', train_lab)
+#            print('classes: ', unique_labels(train_lab))
+#            print('train_lab: ', train_lab)
             for actClass in range(len(self.classes_)):
                 nb_prot = nb_ppc[actClass] # nb_ppc:  # prototypes per class
                 if(self.protos_initialized[actClass] == 0 and actClass in unique_labels(train_lab)):
@@ -389,6 +409,6 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                              classes in first call of fit/partial_fit'.format(y))
             
         self._optimize(X, y, random_state)
-        print('Weight-matrix debug: \n', self.w_)
+#        print('Weight-matrix debug: \n', self.w_)
         return self
     

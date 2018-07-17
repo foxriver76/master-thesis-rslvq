@@ -57,7 +57,7 @@ def adadelta(x1, training_data, decay_rate=0.9, epsilon=1e-8, n_steps=10000):
             proto = proto + steps[i]
             
             # Calculate Error
-            errors[i] = _costf(x=training_data, w=proto) # _optfun should be the correct choice
+            errors[i] = _costf(x=training_data, w=proto) # _optfun should be the correct choice to minimize
          
 #    plt.plot(steps)    
 #    plt.ylabel('Absolute Step')
