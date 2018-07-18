@@ -54,7 +54,7 @@ def adadelta(x1, training_data, decay_rate=0.9, epsilon=1e-8, n_steps=10000):
             # TODO: Update weights according to costfunction (should do this in Adadelta)
             # TODO: Handle Batch_Size
             # Apply update
-            proto = proto + steps[i]
+            proto += steps[i]
             
             # Calculate Error
             errors[i] = _costf(x=training_data, w=proto) # _optfun should be the correct choice to minimize
@@ -71,9 +71,23 @@ def adadelta(x1, training_data, decay_rate=0.9, epsilon=1e-8, n_steps=10000):
     
 
 # Execute Adadelta
-x = adadelta(x1=[[0.954, 0.392, 0.376, 0.777, 0.951, 22.0], 
-                 [0.154, 0.192, 0.276, 0.977, 0.951, 22.0]], 
-             training_data=[1.5, 0.5, 1.376, 5.78, 0.951, 22.0], 
+x = adadelta(x1=[[  3.86442072,  -8.67346152],
+                 [  4.25960116, -10.19065868],
+                 [  4.15062386,  -9.02946862],
+                 [  4.5047864,  -9.85700446],
+                 [ -3.75065403,  -0.23810625],
+                 [ -4.15312578,  -0.83056292],
+                 [ -3.58535989,  -0.62365679],
+                 [ -3.85306309,  -0.08282406],
+                 [  0.62290859,  -5.49401842],
+                 [  0.85739039,  -4.93796399],
+                 [  0.21804012,  -5.63702014],
+                 [  0.32490749,  -4.06178612],
+                 [ -1.8286395,    6.4499625 ],
+                 [ -1.35754436,   6.56678368],
+                 [ -1.88426733,  8.43300056],
+                 [ -1.45034838,   7.61238691]], 
+             training_data=[1.5, 0.5], 
              n_steps=10000, decay_rate=0.9)
 
 """

@@ -329,7 +329,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             for actClass in range(len(self.classes_)):
                 nb_prot = nb_ppc[actClass] # nb_ppc:  # prototypes per class
                 if(self.protos_initialized[actClass] == 0 and actClass in unique_labels(train_lab)):
-                    print('protos for {} will be initialized now'.format(actClass))
+                    print('Protos for class {} will be initialized now'.format(actClass))
                     print('actClass={}, all_classes={}'.format(actClass, unique_labels(train_lab)))
                               #man geht aktuell davon aus, dass es für jede act class etwas gibt
                     mean = np.mean(             #auf dessen basis der mean berechnet wird
@@ -366,26 +366,26 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         return train_set, train_lab, random_state
 
     def fit(self, X, y, classes=None):
-            """Fit the LVQ model to the given training data and parameters using
-            l-bfgs-b.
-            Parameters
-            ----------
-            x : array-like, shape = [n_samples, n_features]
-              Training vector, where n_samples in the number of samples and
-              n_features is the number of features.
-            y : array, shape = [n_samples]
-              Target values (integers in classification, real numbers in
-              regression)
-            Returns
-            --------
-            self
-            """
-            X, y, random_state = self._validate_train_parms(X, y, classes=classes)
-            if len(np.unique(y)) == 1:
-                raise ValueError("fitting " + type(
-                    self).__name__ + " with only one class is not possible")
-            self._optimize(X, y, random_state)
-            return self
+        """Fit the LVQ model to the given training data and parameters using
+        l-bfgs-b.
+        Parameters
+        ----------
+        x : array-like, shape = [n_samples, n_features]
+          Training vector, where n_samples in the number of samples and
+          n_features is the number of features.
+        y : array, shape = [n_samples]
+          Target values (integers in classification, real numbers in
+          regression)
+        Returns
+        --------
+        self
+        """
+        X, y, random_state = self._validate_train_parms(X, y, classes=classes)
+        if len(np.unique(y)) == 1:
+            raise ValueError("fitting " + type(
+                self).__name__ + " with only one class is not possible")
+        self._optimize(X, y, random_state)
+        return self
     
     def partial_fit(self, X, y, classes=None): # added
         """Fit the LVQ model to the given training data and parameters using
@@ -409,6 +409,5 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                              classes in first call of fit/partial_fit'.format(y))
             
         self._optimize(X, y, random_state)
-#        print('Weight-matrix debug: \n', self.w_)
         return self
     

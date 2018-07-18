@@ -21,9 +21,13 @@ from skmultiflow.classification.lazy.knn import KNN
 from rslvq_stream import RSLVQ
 from skmultiflow.classification.naive_bayes import NaiveBayes
 from sklearn.linear_model import SGDClassifier
-
+from skmultiflow.data.generators.hyper_plane_generator import HyperplaneGenerator
 
 """1. Create a stream"""
+#stream = HyperplaneGenerator(random_state=None, n_features=10, n_drift_features=2, 
+#                                                                      mag_change=0.0, 
+#                                                                      noise_percentage=0.05, 
+#                                                                      sigma_percentage=0.1)
 #stream = AGRAWALGenerator()
 #stream = WaveformGenerator(has_noise=True) # generate Stream 21 numeric attributes 3 classes
 #stream = RandomRBFGeneratorDrift(sample_random_state = 50, 
@@ -32,15 +36,16 @@ from sklearn.linear_model import SGDClassifier
 #stream = RandomRBFGenerator(model_random_state=None, sample_random_state=None, n_classes=2, 
 #                                                                    n_features=10, 
 #                                                                    n_centroids=50)
-#stream = SEAGenerator()
-stream = SineGenerator() # 500 iterations and 8 protos = 70.5 acc, pretrain=250 !sine has concept drift
+stream = SEAGenerator()
+#stream = SineGenerator() # 500 iterations and 8 protos = 70.5 acc, pretrain=250 !sine has concept drift
 stream.prepare_for_use() # prepare stream, has to be done before use
 
 """2. Instantiate the HoeffdingTree classifier"""
-clf = HoeffdingTree() # new classifier with default params
+
+#clf = HoeffdingTree() # new classifier with default params
 #clf = [RSLVQ(prototypes_per_class=2, max_iter=500, gradient_descent='l-bfgs-b', sigma=3.0), 
 #       RSLVQ(prototypes_per_class=2, max_iter=500, gradient_descent='SGD', sigma=3.0)]
-#clf = RSLVQ(prototypes_per_class=2, max_iter=200, gradient_descent='l-bfgs-b', sigma=3.0)
+clf = RSLVQ(prototypes_per_class=2, max_iter=200, sigma=3.0)
 #clf = NaiveBayes()
 #clf = ARFHoeffdingTree()
 #clf = KNN()
@@ -48,7 +53,7 @@ clf = HoeffdingTree() # new classifier with default params
 """3. Setup the evaluator"""
 evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the process
                                 pretrain_size=500,
-                                max_samples=5000,
+                                max_samples=30000,
                                 metrics=['performance', 'kappa', 'true_vs_predicts']) # eval parameter
 #evaluator = EvaluateHoldout(max_samples=40000, batch_size=1, n_wait=10000, max_time=1000,
 #                                 output_file=None, show_plot=True, metrics=['kappa', 
