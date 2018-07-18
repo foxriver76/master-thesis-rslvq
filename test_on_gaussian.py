@@ -15,7 +15,7 @@ from sklearn.metrics import accuracy_score
 from time import time
 
 
-X, y_true = make_blobs(n_samples=1000, centers=4,
+X, y_true = make_blobs(n_samples=9000, centers=4,
                        cluster_std=1.0, random_state=None)
 X = X[:, ::-1] # flip axes for better plotting
 

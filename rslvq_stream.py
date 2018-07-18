@@ -123,23 +123,8 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             out += math.log(s1 / s2)
         return -out
 
-    def _optimize(self, x, y, random_state):
-        if(self.gradient_descent=='l-bfgs-b'):
-            res = minimize(
-                fun=lambda vs: self._optfun(
-                    variables=vs, training_data=x,
-                    label_equals_prototype=y),
-                jac=lambda vs: self._optgrad(
-                    variables=vs, training_data=x,
-                    label_equals_prototype=y,
-                    random_state=random_state),
-                method='l-bfgs-b', x0=self.w_, 
-                options={'disp': False, 'gtol': self.gtol,
-                         'maxiter': self.max_iter})
-            self.w_ = res.x.reshape(self.w_.shape)
-            self.n_iter_ = res.nit
-            
-        elif(self.gradient_descent=='SGD'):
+    def _optimize(self, x, y, random_state):            
+        if(self.gradient_descent=='SGD'):
             """Implementation of Stochastical Gradient Descent"""
             n_data, n_dim = x.shape
             nb_prototypes = self.c_w_.size
@@ -162,10 +147,53 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         elif(self.gradient_descent=='Adadelta'):
             """Implementation of Adadelta"""
             raise ValueError('{} not implemented'.format(self.gradient_descent))
+            n_data, n_dim = x.shape
+            nb_prototypes = self.c_w_.size
+            prototypes = self.w_.reshape(nb_prototypes, n_dim)
+
+            for i in range(n_data):
+                xi = x[i]
+                c_xi = y[i]
+                for j in range(prototypes.shape[0]):
+                    if self.c_w_[j] == c_xi:
+                        # Attract prototype to data point
+                        print('')
+                    else:
+                        # Distance prototype from data point
+                        print('')
         
         elif(self.gradient_descent=='RMSprop'):
             """Implementation of RMSprop"""
             raise ValueError('{} not implemented'.format(self.gradient_descent))
+            n_data, n_dim = x.shape
+            nb_prototypes = self.c_w_.size
+            prototypes = self.w_.reshape(nb_prototypes, n_dim)
+
+            for i in range(n_data):
+                xi = x[i]
+                c_xi = y[i]
+                for j in range(prototypes.shape[0]):
+                    if self.c_w_[j] == c_xi:
+                        # Attract prototype to data point
+                        print('')
+                    else:
+                        # Distance prototype from data point
+                        print('')
+                
+        elif(self.gradient_descent=='l-bfgs-b'):
+            res = minimize(
+                fun=lambda vs: self._optfun(
+                    variables=vs, training_data=x,
+                    label_equals_prototype=y),
+                jac=lambda vs: self._optgrad(
+                    variables=vs, training_data=x,
+                    label_equals_prototype=y,
+                    random_state=random_state),
+                method='l-bfgs-b', x0=self.w_, 
+                options={'disp': False, 'gtol': self.gtol,
+                         'maxiter': self.max_iter})
+            self.w_ = res.x.reshape(self.w_.shape)
+            self.n_iter_ = res.nit
      
     def _costf(self, x, w, **kwargs):
         d = (x - w)[np.newaxis].T 

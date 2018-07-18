@@ -45,13 +45,13 @@ stream.prepare_for_use() # prepare stream, has to be done before use
 #clf = HoeffdingTree() # new classifier with default params
 #clf = [RSLVQ(prototypes_per_class=2, max_iter=500, gradient_descent='l-bfgs-b', sigma=3.0), 
 #       RSLVQ(prototypes_per_class=2, max_iter=500, gradient_descent='SGD', sigma=3.0)]
-clf = RSLVQ(prototypes_per_class=2, max_iter=200, sigma=3.0)
+clf = RSLVQ(prototypes_per_class=1, sigma=3.0)
 #clf = NaiveBayes()
 #clf = ARFHoeffdingTree()
 #clf = KNN()
 
 """3. Setup the evaluator"""
-evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the process
+evaluator = EvaluatePrequential(show_plot=False, # this will also slow down the process
                                 pretrain_size=500,
                                 max_samples=30000,
                                 metrics=['performance', 'kappa', 'true_vs_predicts']) # eval parameter
