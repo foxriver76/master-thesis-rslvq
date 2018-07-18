@@ -72,6 +72,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         self.max_iter = max_iter
         self.gtol = gtol
         self.initial_fit = True
+        self.classes_ = []
         allowed_gradient_descent = ['SGD', 'RMSprop', 'Adadelta', 'l-bfgs-b']
         if gradient_descent in allowed_gradient_descent:
             self.gradient_descent = gradient_descent
@@ -80,7 +81,12 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                              'gradient_descent, please use one '
                              'of the following parameters:\n {}'
                              .format(gradient_descent, allowed_gradient_descent))
-        self.classes_ = []
+        if not isinstance(self.display, bool):
+            raise ValueError("display must be a boolean")
+        if not isinstance(self.max_iter, int) or self.max_iter < 1:
+            raise ValueError("max_iter must be an positive integer")
+        if not isinstance(self.gtol, float) or self.gtol <= 0:
+            raise ValueError("gtol must be a positive float")
 
     def _optgrad(self, variables, training_data, label_equals_prototype,
                  random_state):
@@ -205,12 +211,10 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             prototypes = self.w_
         if y is None:
             fs = [self._costf(e, w, **kwargs) for w in prototypes]
-#            print('y none fs:', fs)
         else:
             fs = [self._costf(e, prototypes[i], **kwargs) for i in
                   range(prototypes.shape[0]) if
                   self.c_w_[i] == y]
-#            print('y fs:', fs)
 
         fs_max = max(fs)
         s = sum([np.math.exp(f - fs_max) for f in fs])
@@ -304,12 +308,6 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         
     def _validate_train_parms(self, train_set, train_lab, classes=None):
         random_state = validation.check_random_state(self.random_state)
-        if not isinstance(self.display, bool):
-            raise ValueError("display must be a boolean")
-        if not isinstance(self.max_iter, int) or self.max_iter < 1:
-            raise ValueError("max_iter must be an positive integer")
-        if not isinstance(self.gtol, float) or self.gtol <= 0:
-            raise ValueError("gtol must be a positive float")
         train_set, train_lab = validation.check_X_y(train_set, train_lab)
 
         if(self.initial_fit):
@@ -352,15 +350,12 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                 self.w_ = np.empty([np.sum(nb_ppc), nb_features], dtype=np.double)
                 self.c_w_ = np.empty([nb_ppc.sum()], dtype=self.classes_.dtype)
             pos = 0
-#            print('classes: ', unique_labels(train_lab))
-#            print('train_lab: ', train_lab)
             for actClass in range(len(self.classes_)):
                 nb_prot = nb_ppc[actClass] # nb_ppc:  # prototypes per class
                 if(self.protos_initialized[actClass] == 0 and actClass in unique_labels(train_lab)):
-                    print('Protos for class {} will be initialized now'.format(actClass))
-                    print('actClass={}, all_classes={}'.format(actClass, unique_labels(train_lab)))
-                              #man geht aktuell davon aus, dass es für jede act class etwas gibt
-                    mean = np.mean(             #auf dessen basis der mean berechnet wird
+                    print('Protos for class {} {} will be initialized now'.format(actClass, 
+                                                                  unique_labels(train_lab)))
+                    mean = np.mean(
                         train_set[train_lab == self.classes_[actClass], :], 0)
                     self.w_[pos:pos + nb_prot] = mean + (
                             random_state.rand(nb_prot, nb_features) * 2 - 1)
