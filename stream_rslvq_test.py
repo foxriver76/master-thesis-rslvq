@@ -17,6 +17,7 @@ from skmultiflow.classification.trees.arf_hoeffding_tree import ARFHoeffdingTree
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
 from skmultiflow.evaluation.evaluate_holdout import EvaluateHoldout
 from skmultiflow.evaluation.measure_collection import ClassificationMeasurements
+from skmultiflow.classification.lazy.sam_knn import SAMKNN
 from skmultiflow.classification.lazy.knn import KNN
 from rslvq_stream import RSLVQ
 from skmultiflow.classification.naive_bayes import NaiveBayes
@@ -52,16 +53,17 @@ stream.prepare_for_use() # prepare stream, has to be done before use
 clf = [RSLVQ(prototypes_per_class=10, max_iter=300, gradient_descent='SGD', sigma=1.0), 
        RSLVQ(prototypes_per_class=10, max_iter=300, gradient_descent='Adadelta', decay_rate=0.9, sigma=1.0),
        RSLVQ(prototypes_per_class=10, max_iter=300, gradient_descent='RMSprop', \
-             learning_rate=0.001, decay_rate=0.9, sigma=1.0),
+             learning_rate=0.001, sigma=1.0),
        HoeffdingTree(),
-       ARFHoeffdingTree()]
+       ARFHoeffdingTree(),
+       SAMKNN(n_neighbors=5, knnWeights='distance')]
 
 #clf = RSLVQ(prototypes_per_class=10, max_iter=300, gradient_descent='RMSprop',
 #             learning_rate=0.001, decay_rate=0.9, sigma=1.0)
 
 """3. Setup the evaluator"""
 evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the process
-                                pretrain_size=1000,
+                                pretrain_size=1,
                                 max_samples=50000,
                                 metrics=['performance', 'kappa', 'true_vs_predicts']) # eval parameter
 #evaluator = EvaluateHoldout(max_samples=40000, batch_size=1, n_wait=10000, max_time=1000,
@@ -73,7 +75,9 @@ evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the p
 """4. Run evaluation"""
 #evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQalt', 'RSLVQneu']) #executes the eval process without it nothing happens
 #evaluator.evaluate(stream=stream, model=clf)
-evaluator.evaluate(stream=stream, model=clf, model_names=['SGD', 'Adadelta', 'RMSprop', 'HTree', 'AHTree'])
+evaluator.evaluate(stream=stream, model=clf, model_names=['SGD', 'Adadelta', 
+                                                          'RMSprop', 'HTree', 
+                                                          'AHTree', 'SAMKNN'])
 
 #Eval does the following things: Check if there are samples in the stream
 #

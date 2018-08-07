@@ -261,12 +261,12 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         C : array, shape = (n_samples,)
             Returns predicted values.
         """
-        check_is_fitted(self, ['w_', 'c_w_'])
-        x = validation.check_array(x)
-        if x.shape[1] != self.w_.shape[1]:
-            raise ValueError("X has wrong number of features\n"
-                             "found=%d\n"
-                             "expected=%d" % (self.w_.shape[1], x.shape[1]))
+#        check_is_fitted(self, ['w_', 'c_w_'])
+#        x = validation.check_array(x)
+#        if x.shape[1] != self.w_.shape[1]:
+#            raise ValueError("X has wrong number of features\n"
+#                             "found=%d\n"
+#                             "expected=%d" % (self.w_.shape[1], x.shape[1]))
 
         def foo(e):
             fun = np.vectorize(lambda w: self._costf(e, w),
@@ -339,7 +339,6 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         if(self.initial_fit):
             if(classes):
                 self.classes_ = np.asarray(classes)
-#                print('classes det: ', self.classes_)
                 self.protos_initialized = np.zeros(self.classes_.size)
             else:
                 self.classes_ = unique_labels(train_lab)
@@ -379,8 +378,6 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             for actClass in range(len(self.classes_)):
                 nb_prot = nb_ppc[actClass] # nb_ppc:  # prototypes per class
                 if(self.protos_initialized[actClass] == 0 and actClass in unique_labels(train_lab)):
-#                    print('Protos for class {} {} will be initialized now'.format(actClass, 
-#                                                                  unique_labels(train_lab)))
                     mean = np.mean(
                         train_set[train_lab == self.classes_[actClass], :], 0)
                     self.w_[pos:pos + nb_prot] = mean + (
@@ -408,11 +405,10 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                     "classes={}\n"
                     "prototype labels={}\n".format(self.classes_, self.c_w_))
         if self.initial_fit:
-            # Next two lines are Init for Adadelta
+            # Next two lines are Init for Adadelta/RMSprop
             self.squared_mean_gradient = np.zeros_like(self.w_)
             self.squared_mean_step = np.zeros_like(self.w_)
             self.initial_fit = False
-#            print('W-matrix initialized: \n', self.w_)
 
         return train_set, train_lab, random_state
 

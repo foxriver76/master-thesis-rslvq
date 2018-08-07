@@ -6,7 +6,7 @@ The following issues could be recognized:
 
    - At the moment --> Everything seems to work well :-)
    
-## Overview of Drift Generators
+## Overview of stream generators
 
 |Dataset|Drift Rate|
 |---|---|
@@ -30,6 +30,8 @@ The main file is stream_rslvq_test.py which uses our class RSLVQ from rslvq_stre
 
 For To-Dos check the following tasks:
    
-   - Implement RMSprop and Adadelta as optimization algorithms for the gradient descent
-   - Remove unnecessary logging
-
+   - Add common streams (see page 12 of Bifet: Adaptive random forests for evolving data stream classification)
+   - Do grid search for params of every algorithm per stream
+   - When found good params, comparsion between the algos per stream
+   - Algorithms: Hoeffding Tree, Adaptive Hoeffding Tree, Adaptive RF, SAMKNN and our three RSLVQ versions
+ 
