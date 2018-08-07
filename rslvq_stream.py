@@ -64,9 +64,11 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
     def __init__(self, prototypes_per_class=1, initial_prototypes=None,
                  sigma=1.0, max_iter=2500, gtol=1e-5,
                  display=False, random_state=None, gradient_descent='SGD',
-                 decay_rate = 0.9):
+                 decay_rate = 0.9, learning_rate = 0.001):
         self.sigma = sigma
         self.random_state = random_state
+        self.learning_rate = learning_rate
+        self.epsilon = 1e-8
         self.initial_prototypes = initial_prototypes
         self.prototypes_per_class = prototypes_per_class
         self.display = display
@@ -157,14 +159,13 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             n_data, n_dim = x.shape
             nb_prototypes = self.c_w_.size
             prototypes = self.w_.reshape(nb_prototypes, n_dim)
-            epsilon = 1e-8
 
             for i in range(n_data):
                 xi = x[i]
                 c_xi = y[i]
                 for j in range(prototypes.shape[0]):
                     d = (xi - prototypes[j])
-                    c = 1 / self.sigma
+                    
                     if self.c_w_[j] == c_xi:
                         gradient = (self._p(j, xi, prototypes=self.w_, y=c_xi) -
                                      self._p(j, xi, prototypes=self.w_)) * d
@@ -176,8 +177,8 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                                 (1 - self.decay_rate) * gradient ** 2
                     
                     # Compute update/step
-                    step = ((self.squared_mean_step[j] + epsilon) / \
-                              (self.squared_mean_gradient[j] + epsilon)) ** 0.5 * gradient
+                    step = ((self.squared_mean_step[j] + self.epsilon) / \
+                              (self.squared_mean_gradient[j] + self.epsilon)) ** 0.5 * gradient
                               
                     # Accumulate updates
                     self.squared_mean_step[j] = self.decay_rate * self.squared_mean_step[j] + \
@@ -188,22 +189,30 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         
         elif(self.gradient_descent=='RMSprop'):
             """Implementation of RMSprop"""
-            raise ValueError('{} not implemented'.format(self.gradient_descent))
             n_data, n_dim = x.shape
             nb_prototypes = self.c_w_.size
             prototypes = self.w_.reshape(nb_prototypes, n_dim)
-            # TODO: implement
+
             for i in range(n_data):
                 xi = x[i]
                 c_xi = y[i]
                 for j in range(prototypes.shape[0]):
+                    d = (xi - prototypes[j])
+                    
                     if self.c_w_[j] == c_xi:
-                        # Attract prototype to data point
-                        print('')
+                        gradient = (self._p(j, xi, prototypes=self.w_, y=c_xi) -
+                                     self._p(j, xi, prototypes=self.w_)) * d
                     else:
-                        # Distance prototype from data point
-                        print('')
-                
+                        gradient = - self._p(j, xi, prototypes=self.w_) * d
+                        
+                    # Accumulate gradient
+                    self.squared_mean_gradient[j] = 0.9 * self.squared_mean_gradient[j] + \
+                            0.1 * gradient ** 2
+                    
+                    # Update Prototype
+                    self.w_[j] += (self.learning_rate / ((self.squared_mean_gradient[j] + \
+                           self.epsilon) ** 0.5)) * gradient
+                    
         elif(self.gradient_descent=='l-bfgs-b'):
             res = minimize(
                 fun=lambda vs: self._optfun(
@@ -330,7 +339,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         if(self.initial_fit):
             if(classes):
                 self.classes_ = np.asarray(classes)
-                print('classes det: ', self.classes_)
+#                print('classes det: ', self.classes_)
                 self.protos_initialized = np.zeros(self.classes_.size)
             else:
                 self.classes_ = unique_labels(train_lab)
@@ -370,14 +379,13 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             for actClass in range(len(self.classes_)):
                 nb_prot = nb_ppc[actClass] # nb_ppc:  # prototypes per class
                 if(self.protos_initialized[actClass] == 0 and actClass in unique_labels(train_lab)):
-                    print('Protos for class {} {} will be initialized now'.format(actClass, 
-                                                                  unique_labels(train_lab)))
+#                    print('Protos for class {} {} will be initialized now'.format(actClass, 
+#                                                                  unique_labels(train_lab)))
                     mean = np.mean(
                         train_set[train_lab == self.classes_[actClass], :], 0)
                     self.w_[pos:pos + nb_prot] = mean + (
                             random_state.rand(nb_prot, nb_features) * 2 - 1)
                     if math.isnan(self.w_[pos, 0]):
-                        print('null: ', actClass)
                         self.protos_initialized[actClass] = 0
                     else:
                         self.protos_initialized[actClass] = 1
@@ -404,7 +412,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             self.squared_mean_gradient = np.zeros_like(self.w_)
             self.squared_mean_step = np.zeros_like(self.w_)
             self.initial_fit = False
-            print('W-matrix initialized: \n', self.w_)
+#            print('W-matrix initialized: \n', self.w_)
 
         return train_set, train_lab, random_state
 

@@ -36,7 +36,7 @@ from skmultiflow.data.generators.hyper_plane_generator import HyperplaneGenerato
 #stream = RandomRBFGenerator(model_random_state=None, sample_random_state=None, n_classes=2, 
 #                                                                    n_features=10, 
 #                                                                    n_centroids=50)
-# rand-rbf isnt a good choice for testing
+
 #stream = SEAGenerator()
 stream = SineGenerator() # 500 iterations and 8 protos = 70.5 acc, pretrain=250 !sine has concept drift
 stream.prepare_for_use() # prepare stream, has to be done before use
@@ -49,9 +49,15 @@ stream.prepare_for_use() # prepare stream, has to be done before use
 #clf = NaiveBayes()
 #clf = ARFHoeffdingTree()
 #clf = KNN()
-clf = [RSLVQ(prototypes_per_class=2, max_iter=300, gradient_descent='SGD', sigma=1.0), 
-       RSLVQ(prototypes_per_class=2, max_iter=300, gradient_descent='Adadelta', decay_rate=0.9),
-       HoeffdingTree()]
+clf = [RSLVQ(prototypes_per_class=10, max_iter=300, gradient_descent='SGD', sigma=1.0), 
+       RSLVQ(prototypes_per_class=10, max_iter=300, gradient_descent='Adadelta', decay_rate=0.9, sigma=1.0),
+       RSLVQ(prototypes_per_class=10, max_iter=300, gradient_descent='RMSprop', \
+             learning_rate=0.001, decay_rate=0.9, sigma=1.0),
+       HoeffdingTree(),
+       ARFHoeffdingTree()]
+
+#clf = RSLVQ(prototypes_per_class=10, max_iter=300, gradient_descent='RMSprop',
+#             learning_rate=0.001, decay_rate=0.9, sigma=1.0)
 
 """3. Setup the evaluator"""
 evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the process
@@ -67,7 +73,7 @@ evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the p
 """4. Run evaluation"""
 #evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQalt', 'RSLVQneu']) #executes the eval process without it nothing happens
 #evaluator.evaluate(stream=stream, model=clf)
-evaluator.evaluate(stream=stream, model=clf, model_names=['SGD', 'Adadelta', 'HTree'])
+evaluator.evaluate(stream=stream, model=clf, model_names=['SGD', 'Adadelta', 'RMSprop', 'HTree', 'AHTree'])
 
 #Eval does the following things: Check if there are samples in the stream
 #
