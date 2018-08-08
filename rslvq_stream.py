@@ -91,6 +91,10 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             raise ValueError("max_iter must be an positive integer")
         if not isinstance(self.gtol, float) or self.gtol <= 0:
             raise ValueError("gtol must be a positive float")
+            
+    def get_prototypes(self):
+        """Returns the prototypes"""
+        return self.w_
 
     def _optgrad(self, variables, training_data, label_equals_prototype,
                  random_state):
@@ -258,7 +262,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         x : array-like, shape = [n_samples, n_features]
         Returns
         -------
-        C : array, shape = (n_samples,)
+        C : array, shape = (n_samples)
             Returns predicted values.
         """
 #        check_is_fitted(self, ['w_', 'c_w_'])

@@ -11,6 +11,7 @@ from skmultiflow.classification.trees import HoeffdingTree
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
 import pandas as pd
 from rslvq_stream import RSLVQ
+from skmultiflow.classification.naive_bayes import NaiveBayes
 
 """init stream"""
 #stream = FileStream('datasets/electricity_final.csv', target_idx=-1, 
@@ -22,8 +23,7 @@ stream = FileStream('datasets/gmsc_final.csv', target_idx=-1,
 stream.prepare_for_use()
 
 """init clf"""
-clf = [HoeffdingTree(), RSLVQ(prototypes_per_class=8, gradient_descent='RMSprop')]
-
+clf = [HoeffdingTree(), RSLVQ(prototypes_per_class=8, gradient_descent='RMSprop', sigma=0.5)]
 """eval stream"""
 evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the process
                                 pretrain_size=1,
@@ -31,4 +31,5 @@ evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the p
                                 metrics=['performance', 'kappa_t'],
                                 output_file=None)
 
-evaluator.evaluate(stream=stream, model=clf, model_names=['HTree', 'RSLVQ'])
+#evaluator.evaluate(stream=stream, model=clf, model_names=['HTree', 'RSLVQ'])
+evaluator.evaluate(stream=stream, model=clf)
