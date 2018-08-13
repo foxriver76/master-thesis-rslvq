@@ -15,18 +15,18 @@ doing One hot encoding, standardization, removing the id column,
 replace missing values and writing it to a new csv-file"""
 
 #airlines_df = pd.read_csv('datasets/airlines.csv') # do all
-#cover_df = pd.read_csv('datasets/covtypeNorm.csv') # remove id first column
+cover_df = pd.read_csv('datasets/covtypeNorm.csv') # remove id first column
 electricity_df = pd.read_csv('datasets/elecNormNew.csv') # remove id, ohe for label
 #kdd_df = pd.read_csv('datasets/kddcup.data_10_percent_corrected.csv') # do all
-#poker_df = pd.read_csv('datasets/poker-lsn.csv') # normalize
+poker_df = pd.read_csv('datasets/poker-lsn.csv') # normalize
 gmsc_df = pd.read_csv('datasets/gmsc-train.csv')
 
 """Drop id column"""
 #airlines_df = airlines_df.drop(['id'], axis=1)
-#cover_df = cover_df.drop(['id'], axis=1)
+cover_df = cover_df.drop(['id'], axis=1)
 electricity_df = electricity_df.drop(['id'], axis=1)
 #kdd_df = kdd_df.drop(['id'], axis=1)
-#poker_df = poker_df.drop(['id'], axis=1)
+poker_df = poker_df.drop(['id'], axis=1)
 
 gmsc_labels = gmsc_df['SeriousDlqin2yrs']
 gmsc_df = gmsc_df.drop(['SeriousDlqin2yrs'], axis=1)
@@ -57,5 +57,5 @@ electricity_df['class'] = electricity_df['class'].apply(elec_classes.index)
 """Save as csv"""
 electricity_df.to_csv('datasets/electricity_final.csv')
 gmsc_df.to_csv('datasets/gmsc_final.csv')
-#poker_df.to_csv('datasets/poker_final.csv')
-#cover_df.to_csv('datasets/cover_final.csv')
+poker_df.to_csv('datasets/poker_final.csv')
+cover_df.to_csv('datasets/cover_final.csv')

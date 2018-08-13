@@ -64,7 +64,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
     def __init__(self, prototypes_per_class=1, initial_prototypes=None,
                  sigma=1.0, max_iter=2500, gtol=1e-5,
                  display=False, random_state=None, gradient_descent='SGD',
-                 decay_rate = 0.9, learning_rate = 0.001):
+                 decay_rate=0.9, learning_rate=0.001):
         self.sigma = sigma
         self.random_state = random_state
         self.learning_rate = learning_rate

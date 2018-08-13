@@ -43,20 +43,20 @@ stream = SineGenerator() # 500 iterations and 8 protos = 70.5 acc, pretrain=250 
 stream.prepare_for_use() # prepare stream, has to be done before use
 
 """2. Instantiate the HoeffdingTree classifier"""
-#clf = HoeffdingTree() # new classifier with default params
+clf = HoeffdingTree() # new classifier with default params
 #clf = [RSLVQ(prototypes_per_class=2, max_iter=500, gradient_descent='l-bfgs-b', sigma=3.0), 
 #       RSLVQ(prototypes_per_class=2, max_iter=500, gradient_descent='SGD', sigma=3.0)]
 #clf = RSLVQ(prototypes_per_class=1, sigma=3.0)
 #clf = NaiveBayes()
 #clf = ARFHoeffdingTree()
 #clf = KNN()
-clf = [RSLVQ(prototypes_per_class=10, max_iter=300, gradient_descent='SGD', sigma=1.0), 
-       RSLVQ(prototypes_per_class=10, max_iter=300, gradient_descent='Adadelta', decay_rate=0.9, sigma=1.0),
-       RSLVQ(prototypes_per_class=10, max_iter=300, gradient_descent='RMSprop', \
-             learning_rate=0.001, sigma=1.0),
-       HoeffdingTree(),
-       ARFHoeffdingTree(),
-       SAMKNN(n_neighbors=5, knnWeights='distance')]
+#clf = [RSLVQ(prototypes_per_class=2, max_iter=300, gradient_descent='SGD', sigma=1.0), 
+#       RSLVQ(prototypes_per_class=2, max_iter=300, gradient_descent='Adadelta', decay_rate=0.9, sigma=1.0),
+#       RSLVQ(prototypes_per_class=2, max_iter=300, gradient_descent='RMSprop', \
+#             learning_rate=0.001, sigma=1.0)]
+#       HoeffdingTree(),
+#       ARFHoeffdingTree(),
+#       SAMKNN(n_neighbors=5, knnWeights='distance')]
 
 #clf = RSLVQ(prototypes_per_class=10, max_iter=300, gradient_descent='RMSprop',
 #             learning_rate=0.001, decay_rate=0.9, sigma=1.0)
@@ -64,9 +64,9 @@ clf = [RSLVQ(prototypes_per_class=10, max_iter=300, gradient_descent='SGD', sigm
 """3. Setup the evaluator"""
 evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the process
                                 pretrain_size=1,
-                                max_samples=50000,
+                                max_samples=60000,
                                 metrics=['performance', 'kappa', 'true_vs_predicts']) # eval parameter
-#evaluator = EvaluateHoldout(max_samples=40000, batch_size=1, n_wait=10000, max_time=1000,
+#evaluator = EvaluateHoldout(max_samples=1500000, batch_size=1, n_wait=10000, max_time=1000,
 #                                 output_file=None, show_plot=True, metrics=['kappa', 
 #                                                                            'performance',
 #                                                                            'true_vs_predicts'],
@@ -74,10 +74,10 @@ evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the p
 
 """4. Run evaluation"""
 #evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQalt', 'RSLVQneu']) #executes the eval process without it nothing happens
-#evaluator.evaluate(stream=stream, model=clf)
-evaluator.evaluate(stream=stream, model=clf, model_names=['SGD', 'Adadelta', 
-                                                          'RMSprop', 'HTree', 
-                                                          'AHTree', 'SAMKNN'])
+evaluator.evaluate(stream=stream, model=clf)
+#evaluator.evaluate(stream=stream, model=clf, model_names=['SGD', 'Adadelta', 
+#                                                          'RMSprop']) #, 'HTree', 
+#                                                          #'AHTree', 'SAMKNN'])
 
 #Eval does the following things: Check if there are samples in the stream
 #
