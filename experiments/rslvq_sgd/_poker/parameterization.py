@@ -11,7 +11,7 @@ from sklearn.model_selection import GridSearchCV
 from rslvq_stream import RSLVQ
 import json
 
-df = pd.read_csv('../../../datasets/electricity_final.csv')
+df = pd.read_csv('../../../datasets/poker_final.csv')
 df = df.drop(df.columns[0], axis=1)
 
 """Subset of 30k"""
@@ -56,7 +56,7 @@ accuracy = clf.score(X, y)
 file = open('../../param_search_results.txt', 'a+')
 
 file.write(50 * '-')
-file.write('\nElectricity - RSLVQ SGD\n')
+file.write('\nPOKER - RSLVQ SGD\n')
 file.write('\nBest score: %.5f ' % (gs.best_score_))
 file.write('\nBest param: %s' % (json.dumps(gs.best_params_)))
 file.write('\nTest Accuracy: %.5f \n\n' % (accuracy))

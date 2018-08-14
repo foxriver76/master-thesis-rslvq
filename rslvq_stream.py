@@ -156,7 +156,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                                      self._p(j, xi, prototypes=self.w_)) * d
                     else:
                         # Distance prototype from data point
-                        self.w_[j] -= c * self._p(j, xi, prototypes=self.w_) * d
+                        self.w_[j] -= c * self._p(j, xi, prototypes=self.w_) * d            
             
         elif(self.gradient_descent=='Adadelta'):
             """Implementation of Adadelta"""
@@ -247,7 +247,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                   range(prototypes.shape[0]) if
                   self.c_w_[i] == y]
 
-        fs_max = max(fs)
+        fs_max = np.max(fs)
         s = sum([np.math.exp(f - fs_max) for f in fs])
         o = np.math.exp(
             self._costf(e, prototypes[j], **kwargs) - fs_max) / s

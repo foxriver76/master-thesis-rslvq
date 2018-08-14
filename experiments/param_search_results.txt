@@ -1,0 +1,7 @@
+--------------------------------------------------
+Electricity - RSLVQ SGD
+
+Best score: 0.57661 
+Best param: {"gradient_descent": "SGD", "prototypes_per_class": 8, "sigma": 5.0}
+Test Accuracy: 0.57658 
+

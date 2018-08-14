@@ -34,4 +34,276 @@ For To-Dos check the following tasks:
    - Do grid search for params of every algorithm per stream
    - When found good params, comparsion between the algos per stream
    - Algorithms: Hoeffding Tree, Adaptive Hoeffding Tree, Adaptive RF, SAMKNN and our three RSLVQ versions
- 
+   
+   
+## Evaluation Tables
+
+### Immediate Accuracy
+
+|Data set|RSLVQ SGD|RSLVQ ADA|RSLVQ RMS|Naive Bayes|Hoeffding Tree|Hoeffding Adaptive Tree|
+|---|---|---|---|---|---|---|
+|LED A|   |   |   |   |   |   |
+|LED G|   |   |   |   |   |   |
+|SEA A|   |   |   |   |   |   |
+|AGR A|   |   |   |   |   |   |
+|AGR G|   |   |   |   |   |   |
+|RTG|   |   |   |   |   |   |
+|RBF F|   |   |   |   |   |   |
+|HYPER|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Synthetic Avg|   |   |   |   |   |   |
+|Synthetic Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|ELEC|85.3|   |   |   |   |   |
+|GMSC|   |   |   |   |   |   |
+|POKR|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Real Avg|   |   |   |   |   |   |
+|Real Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|---|---|---|---|---|---|---|
+|Overall Avg|   |   |   |   |   |   |
+|Overall Avg Rank|   |   |   |   |   |   |
+
+### Immediate Kappa
+
+|Data set|RSLVQ SGD|RSLVQ ADA|RSLVQ RMS|Naive Bayes|Hoeffding Tree|Hoeffding Adaptive Tree|
+|---|---|---|---|---|---|---|
+|LED A|   |   |   |   |   |   |
+|LED G|   |   |   |   |   |   |
+|SEA A|   |   |   |   |   |   |
+|AGR A|   |   |   |   |   |   |
+|AGR G|   |   |   |   |   |   |
+|RTG|   |   |   |   |   |   |
+|RBF F|   |   |   |   |   |   |
+|HYPER|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Synthetic Avg|   |   |   |   |   |   |
+|Synthetic Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|ELEC|70.0|   |   |   |   |   |
+|GMSC|   |   |   |   |   |   |
+|POKR|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Real Avg|   |   |   |   |   |   |
+|Real Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|---|---|---|---|---|---|---|
+|Overall Avg|   |   |   |   |   |   |
+|Overall Avg Rank|   |   |   |   |   |   |
+
+### Immediate Kappa T
+
+|Data set|RSLVQ SGD|RSLVQ ADA|RSLVQ RMS|Naive Bayes|Hoeffding Tree|Hoeffding Adaptive Tree|
+|---|---|---|---|---|---|---|
+|LED A|   |   |   |   |   |   |
+|LED G|   |   |   |   |   |   |
+|SEA A|   |   |   |   |   |   |
+|AGR A|   |   |   |   |   |   |
+|AGR G|   |   |   |   |   |   |
+|RTG|   |   |   |   |   |   |
+|RBF F|   |   |   |   |   |   |
+|HYPER|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Synthetic Avg|   |   |   |   |   |   |
+|Synthetic Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|ELEC|0|   |   |   |   |   |
+|GMSC|   |   |   |   |   |   |
+|POKR|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Real Avg|   |   |   |   |   |   |
+|Real Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|---|---|---|---|---|---|---|
+|Overall Avg|   |   |   |   |   |   |
+|Overall Avg Rank|   |   |   |   |   |   |
+
+### Immediate Kappa M
+
+|Data set|RSLVQ SGD|RSLVQ ADA|RSLVQ RMS|Naive Bayes|Hoeffding Tree|Hoeffding Adaptive Tree|
+|---|---|---|---|---|---|---|
+|LED A|   |   |   |   |   |   |
+|LED G|   |   |   |   |   |   |
+|SEA A|   |   |   |   |   |   |
+|AGR A|   |   |   |   |   |   |
+|AGR G|   |   |   |   |   |   |
+|RTG|   |   |   |   |   |   |
+|RBF F|   |   |   |   |   |   |
+|HYPER|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Synthetic Avg|   |   |   |   |   |   |
+|Synthetic Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|ELEC|65.4|   |   |   |   |   |
+|GMSC|   |   |   |   |   |   |
+|POKR|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Real Avg|   |   |   |   |   |   |
+|Real Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|---|---|---|---|---|---|---|
+|Overall Avg|   |   |   |   |   |   |
+|Overall Avg Rank|   |   |   |   |   |   |
+
+### Immediate CPU-Time
+
+|Data set|RSLVQ SGD|RSLVQ ADA|RSLVQ RMS|Naive Bayes|Hoeffding Tree|Hoeffding Adaptive Tree|
+|---|---|---|---|---|---|---|
+|LED A|   |   |   |   |   |   |
+|LED G|   |   |   |   |   |   |
+|SEA A|   |   |   |   |   |   |
+|AGR A|   |   |   |   |   |   |
+|AGR G|   |   |   |   |   |   |
+|RTG|   |   |   |   |   |   |
+|RBF F|   |   |   |   |   |   |
+|HYPER|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Synthetic Avg|   |   |   |   |   |   |
+|Synthetic Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|ELEC|156.332|   |   |   |   |   |
+|GMSC|   |   |   |   |   |   |
+|POKR|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Real Avg|   |   |   |   |   |   |
+|Real Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|---|---|---|---|---|---|---|
+|Overall Avg|   |   |   |   |   |   |
+|Overall Avg Rank|   |   |   |   |   |   |
+
+### Delayed Accuracy
+
+|Data set|RSLVQ SGD|RSLVQ ADA|RSLVQ RMS|Naive Bayes|Hoeffding Tree|Hoeffding Adaptive Tree|
+|---|---|---|---|---|---|---|
+|LED A|   |   |   |   |   |   |
+|LED G|   |   |   |   |   |   |
+|SEA A|   |   |   |   |   |   |
+|AGR A|   |   |   |   |   |   |
+|AGR G|   |   |   |   |   |   |
+|RTG|   |   |   |   |   |   |
+|RBF F|   |   |   |   |   |   |
+|HYPER|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Synthetic Avg|   |   |   |   |   |   |
+|Synthetic Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|ELEC|51.7|   |   |   |   |   |
+|GMSC|   |   |   |   |   |   |
+|POKR|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Real Avg|   |   |   |   |   |   |
+|Real Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|---|---|---|---|---|---|---|
+|Overall Avg|   |   |   |   |   |   |
+|Overall Avg Rank|   |   |   |   |   |   |
+
+### Delayed Kappa
+
+|Data set|RSLVQ SGD|RSLVQ ADA|RSLVQ RMS|Naive Bayes|Hoeffding Tree|Hoeffding Adaptive Tree|
+|---|---|---|---|---|---|---|
+|LED A|   |   |   |   |   |   |
+|LED G|   |   |   |   |   |   |
+|SEA A|   |   |   |   |   |   |
+|AGR A|   |   |   |   |   |   |
+|AGR G|   |   |   |   |   |   |
+|RTG|   |   |   |   |   |   |
+|RBF F|   |   |   |   |   |   |
+|HYPER|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Synthetic Avg|   |   |   |   |   |   |
+|Synthetic Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|ELEC|0.034|   |   |   |   |   |
+|GMSC|   |   |   |   |   |   |
+|POKR|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Real Avg|   |   |   |   |   |   |
+|Real Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|---|---|---|---|---|---|---|
+|Overall Avg|   |   |   |   |   |   |
+|Overall Avg Rank|   |   |   |   |   |   |
+
+### Delayed Kappa T
+
+|Data set|RSLVQ SGD|RSLVQ ADA|RSLVQ RMS|Naive Bayes|Hoeffding Tree|Hoeffding Adaptive Tree|
+|---|---|---|---|---|---|---|
+|LED A|   |   |   |   |   |   |
+|LED G|   |   |   |   |   |   |
+|SEA A|   |   |   |   |   |   |
+|AGR A|   |   |   |   |   |   |
+|AGR G|   |   |   |   |   |   |
+|RTG|   |   |   |   |   |   |
+|RBF F|   |   |   |   |   |   |
+|HYPER|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Synthetic Avg|   |   |   |   |   |   |
+|Synthetic Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|ELEC|-240.9|   |   |   |   |   |
+|GMSC|   |   |   |   |   |   |
+|POKR|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Real Avg|   |   |   |   |   |   |
+|Real Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|---|---|---|---|---|---|---|
+|Overall Avg|   |   |   |   |   |   |
+|Overall Avg Rank|   |   |   |   |   |   |
+
+### Delayed Kappa M
+
+|Data set|RSLVQ SGD|RSLVQ ADA|RSLVQ RMS|Naive Bayes|Hoeffding Tree|Hoeffding Adaptive Tree|
+|---|---|---|---|---|---|---|
+|LED A|   |   |   |   |   |   |
+|LED G|   |   |   |   |   |   |
+|SEA A|   |   |   |   |   |   |
+|AGR A|   |   |   |   |   |   |
+|AGR G|   |   |   |   |   |   |
+|RTG|   |   |   |   |   |   |
+|RBF F|   |   |   |   |   |   |
+|HYPER|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Synthetic Avg|   |   |   |   |   |   |
+|Synthetic Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|ELEC|-13.9|   |   |   |   |   |
+|GMSC|   |   |   |   |   |   |
+|POKR|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Real Avg|   |   |   |   |   |   |
+|Real Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|---|---|---|---|---|---|---|
+|Overall Avg|   |   |   |   |   |   |
+|Overall Avg Rank|   |   |   |   |   |   |
+
+### Delayed CPU-Time
+
+|Data set|RSLVQ SGD|RSLVQ ADA|RSLVQ RMS|Naive Bayes|Hoeffding Tree|Hoeffding Adaptive Tree|
+|---|---|---|---|---|---|---|
+|LED A|   |   |   |   |   |   |
+|LED G|   |   |   |   |   |   |
+|SEA A|   |   |   |   |   |   |
+|AGR A|   |   |   |   |   |   |
+|AGR G|   |   |   |   |   |   |
+|RTG|   |   |   |   |   |   |
+|RBF F|   |   |   |   |   |   |
+|HYPER|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Synthetic Avg|   |   |   |   |   |   |
+|Synthetic Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|ELEC|81.771|   |   |   |   |   |
+|GMSC|   |   |   |   |   |   |
+|POKR|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|Real Avg|   |   |   |   |   |   |
+|Real Avg Rank|   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|---|---|---|---|---|---|---|
+|Overall Avg|   |   |   |   |   |   |
+|Overall Avg Rank|   |   |   |   |   |   |
