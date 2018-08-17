@@ -15,10 +15,10 @@ stream = FileStream('../../../datasets/poker_final.csv', target_idx=-1,
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = RSLVQ(prototypes_per_class=2, sigma=1.0, gradient_descent='SGD')
+clf = RSLVQ(prototypes_per_class=12, sigma=5.0, gradient_descent='SGD') # optimized
 
 """3. Setup evaluator"""
-evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max_time=1000,
+evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max_time=10000000,
                                  output_file=None, show_plot=False, metrics=['performance',
                                                                             'kappa_t',
                                                                             'kappa_m',

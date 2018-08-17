@@ -16,7 +16,7 @@ stream = FileStream('../../../datasets/poker_final.csv', target_idx=-1,
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = RSLVQ(prototypes_per_class=2, sigma=1.0, gradient_descent='SGD')
+clf = RSLVQ(prototypes_per_class=12, sigma=5.0, gradient_descent='SGD') # optimized
 
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,
