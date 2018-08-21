@@ -20,7 +20,7 @@ clf = RSLVQ(prototypes_per_class=8, sigma=5.0, gradient_descent='SGD') # via gri
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,
                                 pretrain_size=1,
-                                max_samples=100000,
+                                max_samples=1000000,
                                 metrics=['performance', 'kappa_t', 'kappa_m', 'kappa'],
                                 output_file=None)
 

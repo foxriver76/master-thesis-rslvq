@@ -14,7 +14,7 @@ stream = FileStream('../../../datasets/gmsc_final.csv', target_idx=-1)
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = RSLVQ(prototypes_per_class=2, sigma=1.0, gradient_descent='RMSprop', learning_rate=0.001)
+clf = RSLVQ(prototypes_per_class=1, sigma=2.0, gradient_descent='RMSprop', learning_rate=0.3) # optimized + manual
 
 """3. Setup evaluator"""
 evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max_time=1000,

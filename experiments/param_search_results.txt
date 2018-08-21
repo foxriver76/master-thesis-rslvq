@@ -19,3 +19,24 @@ Best score: 0.49598
 Best param: {"gradient_descent": "SGD", "prototypes_per_class": 12, "sigma": 5.0}
 Test Accuracy: 0.50925 
 
+--------------------------------------------------
+Electricity - RSLVQ RMSprop
+
+Best score: 0.60015 
+Best param: {"gradient_descent": "RMSprop", "learning_rate": 0.01, "prototypes_per_class": 12, "sigma": 1.0}
+Test Accuracy: 0.59655 
+
+--------------------------------------------------
+GMSC - RSLVQ RMSprop
+
+Best score: 0.90980 
+Best param: {"gradient_descent": "RMSprop", "learning_rate": 0.1, "prototypes_per_class": 1, "sigma": 2.0}
+Test Accuracy: 0.89157 
+
+--------------------------------------------------
+POKER - RSLVQ RMSprop
+
+Best score: 0.52068 
+Best param: {"gradient_descent": "RMSprop", "learning_rate": 0.3, "prototypes_per_class": 1, "sigma": 1.0}
+Test Accuracy: 0.45752 
+

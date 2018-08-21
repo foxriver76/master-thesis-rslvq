@@ -15,14 +15,14 @@ df = pd.read_csv('../../../datasets/gmsc_final.csv')
 df = df.drop(df.columns[0], axis=1)
 
 """Subset of 30k"""
-X = df.loc[:30000, df.columns != 'class'].values
-y = df.loc[:30000, df.columns == 'class'].values
+X = df.loc[:30000, df.columns != 'SeriousDlqin2yrs'].values
+y = df.loc[:30000, df.columns == 'SeriousDlqin2yrs'].values
 y = y.ravel()
 
 clf = RSLVQ()
 
 """Specify possible params"""
-ppt_range = [1, 2, 4, 8, 10, 12, 20]
+ppt_range = [1, 2, 4, 8, 10, 12]
 sigma_range = [1.0, 2.0, 3.0, 5.0]
 learning_range = [0.001, 0.0001, 0.01, 0.1, 0.3]
 
