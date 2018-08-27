@@ -16,7 +16,7 @@ stream = FileStream('../../../datasets/gmsc_final.csv', target_idx=-1)
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = HAT(split_criterion='info_gain')
+clf = HAT(split_criterion='gini')
 
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,

@@ -13,7 +13,6 @@ import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils.multiclass import unique_labels
 from skmultiflow.core.base import StreamModel
-from scipy.optimize import minimize
 from sklearn.utils import validation
 from sklearn.utils.validation import check_is_fitted
 
@@ -30,15 +29,8 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
      optional
         Prototypes to start with. If not given initialization near the class
         means. Class label must be placed as last entry of each prototype.
-    sigma : float, optional (default=0.5)
+    sigma : float, optional (default=1.0)
         Variance for the distribution.
-    max_iter : int, optional (default=2500)
-        The maximum number of iterations.
-    gtol : float, optional (default=1e-5)
-        Gradient norm must be less than gtol before successful termination
-        of bfgs.
-    display : boolean, optional (default=False)
-        Print information about the bfgs steps.
     random_state : int, RandomState instance or None, optional
         If int, random_state is the seed used by the random number generator;
         If RandomState instance, random_state is the random number generator;
@@ -46,8 +38,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         by `np.random`.
     gradient_descent : string, Gradient Descent describes the used technique
         to perform the gradient descent. Possible values: 'SGD' (default),
-        'RMSprop', 'Adadelta', 'l-bfgs-b'. Currently only SGD and l-bfgs-b 
-        are implemented.
+        'RMSprop', 'Adadelta'.
     Attributes
     ----------
     w_ : array-like, shape = [n_prototypes, n_features]
@@ -62,8 +53,7 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
     """
 
     def __init__(self, prototypes_per_class=1, initial_prototypes=None,
-                 sigma=1.0, max_iter=2500, gtol=1e-5,
-                 display=False, random_state=None, gradient_descent='SGD',
+                 sigma=1.0, gradient_descent='SGD', random_state=None,
                  decay_rate=0.9, learning_rate=0.001):
         self.sigma = sigma
         self.random_state = random_state
@@ -71,13 +61,10 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         self.epsilon = 1e-8
         self.initial_prototypes = initial_prototypes
         self.prototypes_per_class = prototypes_per_class
-        self.display = display
-        self.max_iter = max_iter
-        self.gtol = gtol
         self.initial_fit = True
         self.classes_ = []
         self.decay_rate = decay_rate
-        allowed_gradient_descent = ['SGD', 'RMSprop', 'Adadelta', 'l-bfgs-b']
+        allowed_gradient_descent = ['SGD', 'RMSprop', 'Adadelta']
         if gradient_descent in allowed_gradient_descent:
             self.gradient_descent = gradient_descent
         else:
@@ -85,57 +72,10 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                              'gradient_descent, please use one '
                              'of the following parameters:\n {}'
                              .format(gradient_descent, allowed_gradient_descent))
-        if not isinstance(self.display, bool):
-            raise ValueError("display must be a boolean")
-        if not isinstance(self.max_iter, int) or self.max_iter < 1:
-            raise ValueError("max_iter must be an positive integer")
-        if not isinstance(self.gtol, float) or self.gtol <= 0:
-            raise ValueError("gtol must be a positive float")
             
     def get_prototypes(self):
         """Returns the prototypes"""
         return self.w_
-
-    def _optgrad(self, variables, training_data, label_equals_prototype,
-                 random_state):
-        n_data, n_dim = training_data.shape
-        nb_prototypes = self.c_w_.size
-        prototypes = variables.reshape(nb_prototypes, n_dim)
-        g = np.zeros(prototypes.shape)
-        for i in range(n_data):
-            xi = training_data[i]
-            c_xi = label_equals_prototype[i]
-            for j in range(prototypes.shape[0]):
-                d = (xi - prototypes[j])
-                c = 1 / self.sigma
-                if self.c_w_[j] == c_xi:
-                    g[j] += c * (self._p(j, xi, prototypes=prototypes, y=c_xi) -
-                                 self._p(j, xi, prototypes=prototypes)) * d
-                else:
-                    g[j] -= c * self._p(j, xi, prototypes=prototypes) * d
-        g /= n_data
-        g *= -(1 + 0.0001 * random_state.rand(*g.shape) - 0.5)
-        return g.ravel()
-
-    def _optfun(self, variables, training_data, label_equals_prototype):
-        n_data, n_dim = training_data.shape
-        nb_prototypes = self.c_w_.size
-        prototypes = variables.reshape(nb_prototypes, n_dim)
-
-        out = 0
-
-        for i in range(n_data):
-            xi = training_data[i]
-            y = label_equals_prototype[i]
-            fs = [self._costf(xi, w) for w in prototypes]
-            fs_max = max(fs)
-            s1 = sum([np.math.exp(fs[i] - fs_max) for i in range(len(fs))
-                      if self.c_w_[i] == y])
-            s2 = sum([np.math.exp(f - fs_max) for f in fs])
-            s1 += 0.0000001
-            s2 += 0.0000001
-            out += math.log(s1 / s2)
-        return -out
 
     def _optimize(self, x, y, random_state):            
         if(self.gradient_descent=='SGD'):
@@ -216,21 +156,6 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                     # Update Prototype
                     self.w_[j] += (self.learning_rate / ((self.squared_mean_gradient[j] + \
                            self.epsilon) ** 0.5)) * gradient
-                    
-        elif(self.gradient_descent=='l-bfgs-b'):
-            res = minimize(
-                fun=lambda vs: self._optfun(
-                    variables=vs, training_data=x,
-                    label_equals_prototype=y),
-                jac=lambda vs: self._optgrad(
-                    variables=vs, training_data=x,
-                    label_equals_prototype=y,
-                    random_state=random_state),
-                method='l-bfgs-b', x0=self.w_, 
-                options={'disp': False, 'gtol': self.gtol,
-                         'maxiter': self.max_iter})
-            self.w_ = res.x.reshape(self.w_.shape)
-            self.n_iter_ = res.nit
      
     def _costf(self, x, w, **kwargs):
         d = (x - w)[np.newaxis].T 
