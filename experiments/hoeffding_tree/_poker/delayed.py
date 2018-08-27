@@ -16,7 +16,7 @@ stream = FileStream('../../../datasets/poker_final.csv', target_idx=-1,
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = HoeffdingTree(split_criterion='info_gain')
+clf = HoeffdingTree(split_criterion='gini')
 
 """3. Setup evaluator"""
 evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max_time=1000,

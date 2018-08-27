@@ -17,12 +17,12 @@ stream = FileStream('../../../datasets/poker_final.csv', target_idx=-1,
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = HoeffdingTree(split_criterion='info_gain')
+clf = HoeffdingTree(split_criterion='gini')
 
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,
                                 pretrain_size=1,
-                                max_samples=100000,
+                                max_samples=1000000,
                                 metrics=['performance', 'kappa_t', 'kappa_m', 'kappa'],
                                 output_file=None)
 

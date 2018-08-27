@@ -16,7 +16,7 @@ stream = FileStream('../../../datasets/electricity_final.csv', target_idx=-1)
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = HoeffdingTree(split_criterion='info_gain')
+clf = HoeffdingTree(split_criterion='info_gain') # gini
 
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,

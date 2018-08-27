@@ -40,3 +40,24 @@ Best score: 0.52068
 Best param: {"gradient_descent": "RMSprop", "learning_rate": 0.3, "prototypes_per_class": 1, "sigma": 1.0}
 Test Accuracy: 0.45752 
 
+--------------------------------------------------
+Electricity - RSLVQ Adadelta
+
+Best score: 0.62321 
+Best param: {"decay_rate": 0.7, "gradient_descent": "Adadelta", "prototypes_per_class": 10, "sigma": 1.0}
+Test Accuracy: 0.61665 
+
+--------------------------------------------------
+GMSC - RSLVQ Adadelta
+
+Best score: 0.44345 
+Best param: {"decay_rate": 0.9, "gradient_descent": "Adadelta", "prototypes_per_class": 10, "sigma": 3.0}
+Test Accuracy: 0.44335 
+
+--------------------------------------------------
+POKER - RSLVQ Adadelta
+
+Best score: 0.48368 
+Best param: {"decay_rate": 0.001, "gradient_descent": "Adadelta", "prototypes_per_class": 1, "sigma": 5.0}
+Test Accuracy: 0.51442 
+
