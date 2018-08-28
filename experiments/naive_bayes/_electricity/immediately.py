@@ -16,7 +16,7 @@ stream = FileStream('../../../datasets/electricity_final.csv', target_idx=-1)
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = NaiveBayes()
+clf = NaiveBayes(alpha=1.0, fit_prior=True)
 
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,
