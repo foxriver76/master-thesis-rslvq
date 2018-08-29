@@ -8,7 +8,7 @@ Created on Mon Aug 13 08:52:32 2018
 
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
 from skmultiflow.data.file_stream import FileStream
-from skmultiflow.classification.trees.hoeffding_adaptive_tree import HAT
+from skmultiflow.trees.hoeffding_adaptive_tree import HAT
 
 """1. Create stream"""
 stream = FileStream('../../../datasets/electricity_final.csv', target_idx=-1)

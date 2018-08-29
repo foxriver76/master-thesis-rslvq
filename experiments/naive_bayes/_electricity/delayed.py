@@ -7,7 +7,7 @@ Created on Mon Aug 13 08:53:06 2018
 """
 from skmultiflow.evaluation.evaluate_holdout import EvaluateHoldout
 from skmultiflow.data.file_stream import FileStream
-from skmultiflow.classification.naive_bayes import NaiveBayes
+from skmultiflow.bayes.naive_bayes import NaiveBayes
 
 """1. Create stream"""
 stream = FileStream('../../../datasets/electricity_final.csv', target_idx=-1)
