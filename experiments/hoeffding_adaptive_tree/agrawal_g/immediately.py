@@ -7,13 +7,17 @@ Created on Mon Aug 13 08:52:32 2018
 """
 
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
-from skmultiflow.data.file_stream import FileStream
+from skmultiflow.data.concept_drift_stream import ConceptDriftStream
+from skmultiflow.data import AGRAWALGenerator
 from skmultiflow.classification.trees.hoeffding_adaptive_tree import HAT
 
 """1. Create stream"""
-stream = FileStream('../../../datasets/electricity_final.csv', target_idx=-1, 
-                    n_targets=1, cat_features_idx=[0, 2, 4, 6, 8])
-
+stream = ConceptDriftStream(stream=AGRAWALGenerator(random_state=112, perturbation=0.1), 
+                            drift_stream=AGRAWALGenerator(random_state=112, 
+                                                          classification_function=2, perturbation=0.1),
+                            random_state=None,
+                            position=250000,
+                            width=25000)
 stream.prepare_for_use()
 
 """2. Create classifier"""

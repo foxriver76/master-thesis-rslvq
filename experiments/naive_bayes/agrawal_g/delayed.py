@@ -6,9 +6,9 @@ Created on Mon Aug 13 08:53:06 2018
 @author: moritz
 """
 from skmultiflow.evaluation.evaluate_holdout import EvaluateHoldout
+from skmultiflow.bayes.naive_bayes import NaiveBayes
 from skmultiflow.data.concept_drift_stream import ConceptDriftStream
 from skmultiflow.data import AGRAWALGenerator
-from skmultiflow.trees.hoeffding_adaptive_tree import HAT
 
 """1. Create stream"""
 stream = ConceptDriftStream(stream=AGRAWALGenerator(random_state=112, perturbation=0.1), 
@@ -22,7 +22,7 @@ stream = ConceptDriftStream(stream=AGRAWALGenerator(random_state=112, perturbati
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = HAT(split_criterion='info_gain')
+clf = NaiveBayes()
 
 """3. Setup evaluator"""
 evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max_time=1000,
