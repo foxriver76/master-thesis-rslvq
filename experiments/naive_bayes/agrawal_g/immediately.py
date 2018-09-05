@@ -14,10 +14,10 @@ from skmultiflow.data import AGRAWALGenerator
 """1. Create stream"""
 stream = ConceptDriftStream(stream=AGRAWALGenerator(random_state=112, perturbation=0.1), 
                             drift_stream=AGRAWALGenerator(random_state=112, 
-                                                          classification_function=2, perturbation=0.1),
+                                                          classification_function=1, perturbation=0.1),
                             random_state=None,
                             position=250000,
-                            width=25000)
+                            width=50000)
 
 stream.prepare_for_use()
 
@@ -32,4 +32,4 @@ evaluator = EvaluatePrequential(show_plot=False,
                                 output_file=None)
 
 """4. Run evaluator"""
-evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQ SGD'])
+evaluator.evaluate(stream=stream, model=clf, model_names=['Naive Bayes'])

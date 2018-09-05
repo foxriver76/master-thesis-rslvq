@@ -13,15 +13,15 @@ from skmultiflow.data import AGRAWALGenerator
 """1. Create stream"""
 stream = ConceptDriftStream(stream=AGRAWALGenerator(random_state=112, perturbation=0.1), 
                             drift_stream=AGRAWALGenerator(random_state=112, 
-                                                          classification_function=2, perturbation=0.1),
+                                                          classification_function=1, perturbation=0.1),
                             random_state=None,
                             position=250000,
-                            width=25000)
+                            width=50000)
 
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = HoeffdingTree(split_criterion='gini')
+clf = HoeffdingTree(split_criterion='info_gain')
 
 """3. Setup evaluator"""
 evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max_time=1000,
@@ -33,4 +33,4 @@ evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max
 
 
 """4. Run evaluator"""
-evaluator.evaluate(stream=stream, model=clf, model_names=['HAT'])
+evaluator.evaluate(stream=stream, model=clf, model_names=['Hoeffding Tree'])

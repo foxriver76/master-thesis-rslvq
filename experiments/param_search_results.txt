@@ -75,3 +75,10 @@ Best score: 0.46437
 Best param: {"decay_rate": 0.9, "gradient_descent": "Adadelta", "prototypes_per_class": 4, "sigma": 5.0}
 Test Accuracy: 0.46453 
 
+--------------------------------------------------
+AGRAWAL - RSLVQ RMSprop
+
+Best score: 0.62107 
+Best param: {"gradient_descent": "RMSprop", "learning_rate": 0.3, "prototypes_per_class": 8, "sigma": 5.0}
+Test Accuracy: 0.66503 
+

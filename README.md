@@ -26,14 +26,13 @@ The following issues could be recognized:
 |[Data Regression](https://scikit-multiflow.github.io/scikit-multiflow/skmultiflow.data.regression_generator.html#module-skmultiflow.data.regression_generator)|None|
 
 ## To-Dos
-The main file is stream_rslvq_test.py which uses our class RSLVQ from rslvq_stream.py.
 
 For To-Dos check the following tasks:
    
    - Add common streams (see page 12 of Bifet: Adaptive random forests for evolving data stream classification)
    - Do grid search for params of every algorithm per stream
    - When found good params, comparsion between the algos per stream
-   - Algorithms: Hoeffding Tree, Adaptive Hoeffding Tree, Adaptive RF, SAMKNN and our three RSLVQ versions
+   - Algorithms: Hoeffding Tree, Adaptive Hoeffding Tree, Naive Bayes and our three RSLVQ versions
    
    
 ## Evaluation Tables
@@ -46,8 +45,8 @@ For To-Dos check the following tasks:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|50.1|54.3|   |   |   |   |
-|AGR G|52.7|53.3|   |   |   |   |
+|AGR A|50.1|54.3|51.5|50.8|**99.9**|79.8|
+|AGR G|52.7|53.3|53.3|55.5|**86.7**|79.3|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -74,8 +73,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|   |   |   |   |   |   |
-|AGR G|   |   |   |   |   |   |
+|AGR A|6|3|4|5|1|2|
+|AGR G|6|4|4|3|1|2|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -99,8 +98,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|0.3|-0.1|   |   |   |   |
-|AGR G|4.1|5.9|   |   |   |   |
+|AGR A|0.3|-0.1|1.4|0.3|**99.9**|58.6|
+|AGR G|4.1|5.9|6.0|10.6|**73.3**|57.6|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -127,8 +126,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|   |   |   |   |   |   |
-|AGR G|   |   |   |   |   |   |
+|AGR A|4|6|3|4|1|2
+|AGR G|6|5|4|3|1|2|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -153,8 +152,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|-3.3|5.4|   |   |   |   |
-|AGR G|-1.5|-0.1|   |   |   |   |
+|AGR A|-3.3|5.4|-0.3|-1.8|**99.9**|58.2|
+|AGR G|-1.5|-0.1|-0.1|4.6|**71.5**|57.2|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -181,8 +180,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|   |   |   |   |   |   |
-|AGR G|   |   |   |   |   |   |
+|AGR A|6|3|4|5|1|2|
+|AGR G|6|4|4|3|1|2|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -206,8 +205,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|-16.2|-6.0|   |   |   |   |
-|AGR G|-3.5|-2.1|   |   |   |   |
+|AGR A|-16.2|-6.0|-12.8|-14.1|**99.9**|52.9|
+|AGR G|-3.5|-2.1|-2.2|2.6|**71.0**|51.8|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -234,8 +233,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|   |   |   |   |   |   |
-|AGR G|   |   |   |   |   |   |
+|AGR A|6|3|4|5|1|2|
+|AGR G|6|4|5|3|1|2|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -259,8 +258,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|784.518|1751.439|   |   |   |   |
-|AGR G|832.535|815.114|   |   |   |   |
+|AGR A|784.518|1751.439|791.685|553.756|**398.257**|563.763|
+|AGR G|832.535|815.114|821.120|597.256|**381.478**|619.775|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -287,8 +286,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|   |   |   |   |   |   |
-|AGR G|   |   |   |   |   |   |
+|AGR A|4|6|5|2|1|3|
+|AGR G|6|4|5|2|1|3|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -312,8 +311,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|50.3|54.1|   |   |   |   |
-|AGR G|53.4|51.5|   |   |   |   |
+|AGR A|50.3|54.1|49.7|51.3|**98.8**|78.3|
+|AGR G|53.4|51.5|53.6|55.7|**85.8**|77.9|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -340,8 +339,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A||   |   |   |   |   |
-|AGR G|   |   |   |   |   |   |
+|AGR A|5|3|6|4|1|2|
+|AGR G|5|6|4|3|1|2|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -365,8 +364,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|1.1|-0.2|   |   |   |   |
-|AGR G|6.2|3.6|   |   |   |   |
+|AGR A|1.1|-0.2|-0.2|-0.1|**97.5**|55.6|
+|AGR G|6.2|3.6|6.3|10.8|**71.6**|54.8|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -393,8 +392,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|   |   |   |   |   |   |
-|AGR G|   |   |   |   |   |   |
+|AGR A|3|5|5|4|1|2|
+|AGR G|5|6|4|3|1|2|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -418,8 +417,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|-2.9|5.2|   |   |   |   |
-|AGR G|0.1|-4.1|   |   |   |   |
+|AGR A|-2.9|5.2|-0.4|-0.8|**97.5**|55.1|
+|AGR G|0.1|-4.1|0.5|4.9|**69.6**|54.3|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -446,8 +445,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|   |   |   |   |   |   |
-|AGR G|   |   |   |   |   |   |
+|AGR A|6|3|4|5|1|2|
+|AGR G|5|6|4|3|1|2|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -471,8 +470,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|12.6|-6.0|   |   |   |   |
-|AGR G|14.3|10.8|   |   |   |   |
+|AGR A|12.6|-6.0|11.6|-12.6|**97.2**|61.8|
+|AGR G|14.3|10.8|14.7|18.5|**73.9**|61.2|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -499,8 +498,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|   |   |   |   |   |   |
-|AGR G|   |   |   |   |   |   |
+|AGR A|3|5|4|6|1|2|
+|AGR G|5|6|4|3|1|2|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -524,8 +523,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|364.802|859.119|   |   |   |   |
-|AGR G|384.454|407.795|   |   |   |   |
+|AGR A|364.802|859.119|405.709|292.374|**184.668**|349.424|
+|AGR G|384.454|407.795|404.792|339.822|**237.133**|323.537|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |
@@ -552,8 +551,8 @@ Rank Table:
 |LED G|   |   |   |   |   |   |
 |SEA A|   |   |   |   |   |   |
 |SEA G|   |   |   |   |   |   |
-|AGR A|   |   |   |   |   |   |
-|AGR G|   |   |   |   |   |   |
+|AGR A|4|6|5|2|1|3|
+|AGR G|4|6|5|3|1|2|
 |RTG|   |   |   |   |   |   |
 |RBF F|   |   |   |   |   |   |
 |HYPER|   |   |   |   |   |   |

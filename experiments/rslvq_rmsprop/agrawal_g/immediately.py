@@ -14,16 +14,15 @@ from skmultiflow.data import AGRAWALGenerator
 """1. Create stream"""
 stream = ConceptDriftStream(stream=AGRAWALGenerator(random_state=112, perturbation=0.1), 
                             drift_stream=AGRAWALGenerator(random_state=112, 
-                                                          classification_function=2, perturbation=0.1),
+                                                          classification_function=1, perturbation=0.1),
                             random_state=None,
-                            alpha=90.0, # angle of change grade 0 - 90
                             position=250000,
-                            width=1)
+                            width=50000)
 
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = RSLVQ(prototypes_per_class=1, sigma=5.0, gradient_descent='SGD') # optimized
+clf = RSLVQ(prototypes_per_class=1, sigma=5.0, gradient_descent='RMSprop', learning_rate=0.3) # optimized + manual
 
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,
@@ -33,4 +32,4 @@ evaluator = EvaluatePrequential(show_plot=False,
                                 output_file=None)
 
 """4. Run evaluator"""
-evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQ SGD'])
+evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQ RMS'])

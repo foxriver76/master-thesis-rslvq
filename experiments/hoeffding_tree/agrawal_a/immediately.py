@@ -7,7 +7,7 @@ Created on Mon Aug 13 08:52:32 2018
 """
 
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
-from rslvq_stream import RSLVQ
+from skmultiflow.trees.hoeffding_tree import HoeffdingTree
 from skmultiflow.data.concept_drift_stream import ConceptDriftStream
 from skmultiflow.data import AGRAWALGenerator
 
@@ -22,10 +22,10 @@ stream = ConceptDriftStream(stream=AGRAWALGenerator(random_state=112),
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = RSLVQ(prototypes_per_class=1, sigma=1.0, gradient_descent='Adadelta', decay_rate=0.9)
+clf = HoeffdingTree(split_criterion='info_gain')
 
 """3. Setup evaluator"""
-evaluator = EvaluatePrequential(show_plot=False,
+evaluator = EvaluatePrequential(show_plot=True,
                                 pretrain_size=1,
                                 max_samples=1000000,
                                 metrics=['performance', 'kappa_t', 'kappa_m', 'kappa'],

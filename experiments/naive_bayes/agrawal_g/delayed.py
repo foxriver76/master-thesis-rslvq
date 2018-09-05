@@ -13,11 +13,10 @@ from skmultiflow.data import AGRAWALGenerator
 """1. Create stream"""
 stream = ConceptDriftStream(stream=AGRAWALGenerator(random_state=112, perturbation=0.1), 
                             drift_stream=AGRAWALGenerator(random_state=112, 
-                                                          classification_function=2, perturbation=0.1),
+                                                          classification_function=1, perturbation=0.1),
                             random_state=None,
-                            alpha=90.0, # angle of change grade 0 - 90
                             position=250000,
-                            width=1)
+                            width=50000)
 
 stream.prepare_for_use()
 
@@ -34,4 +33,4 @@ evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max
 
 
 """4. Run evaluator"""
-evaluator.evaluate(stream=stream, model=clf, model_names=['HAT'])
+evaluator.evaluate(stream=stream, model=clf, model_names=['Naive Bayes'])

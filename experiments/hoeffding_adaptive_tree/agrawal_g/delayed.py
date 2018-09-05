@@ -8,7 +8,7 @@ Created on Mon Aug 13 08:53:06 2018
 from skmultiflow.evaluation.evaluate_holdout import EvaluateHoldout
 from skmultiflow.data.concept_drift_stream import ConceptDriftStream
 from skmultiflow.data import AGRAWALGenerator
-from skmultiflow.classification.trees.hoeffding_adaptive_tree import HAT
+from skmultiflow.trees.hoeffding_adaptive_tree import HAT
 
 """1. Create stream"""
 stream = ConceptDriftStream(stream=AGRAWALGenerator(random_state=112, perturbation=0.1), 
@@ -16,7 +16,7 @@ stream = ConceptDriftStream(stream=AGRAWALGenerator(random_state=112, perturbati
                                                           classification_function=2, perturbation=0.1),
                             random_state=None,
                             position=250000,
-                            width=25000)
+                            width=50000)
                             
 stream.prepare_for_use()
 
