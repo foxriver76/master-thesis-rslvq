@@ -22,7 +22,7 @@ stream = ConceptDriftStream(stream=SEAGenerator(random_state=112, noise_percenta
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = RSLVQ(prototypes_per_class=2, gradient_descent='SGD', sigma=5.0) # optimized
+clf = RSLVQ(prototypes_per_class=1, gradient_descent='Adadelta', sigma=1.0, decay_rate=0.999) #optimized + manual
 
 """3. Setup evaluator"""
 evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max_time=1000,
@@ -32,6 +32,5 @@ evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max
                                                                             'kappa'],
                                  test_size=10000, dynamic_test_set=True)
 
-
 """4. Run evaluator"""
-evaluator.evaluate(stream=stream, model=clf, model_names=['HAT'])
+evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQ ADA'])

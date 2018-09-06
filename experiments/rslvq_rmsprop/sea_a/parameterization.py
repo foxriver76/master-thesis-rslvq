@@ -30,7 +30,7 @@ clf = RSLVQ()
 """Specify possible params"""
 ppt_range = [1, 2, 4, 8, 10, 12]
 sigma_range = [1.0, 2.0, 3.0, 5.0]
-learning_range = [0.001, 0.0001, 0.01, 0.1, 0.3]
+learning_range = [0.001, 0.0001, 0.01, 0.1, 0.3, 0.9]
 
 param_grid = [{'sigma': sigma_range,
                'gradient_descent': ['RMSprop'],
