@@ -82,3 +82,10 @@ Best score: 0.62107
 Best param: {"gradient_descent": "RMSprop", "learning_rate": 0.3, "prototypes_per_class": 8, "sigma": 5.0}
 Test Accuracy: 0.66503 
 
+--------------------------------------------------
+SEA - RSLVQ SGD
+
+Best score: 0.82987 
+Best param: {"gradient_descent": "SGD", "prototypes_per_class": 2, "sigma": 5.0}
+Test Accuracy: 0.85117 
+

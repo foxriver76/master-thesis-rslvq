@@ -7,12 +7,11 @@ Created on Mon Aug 13 08:52:32 2018
 """
 
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
-from skmultiflow.data.file_stream import FileStream
-from skmultiflow.classification.trees.hoeffding_adaptive_tree import HAT
+from skmultiflow.data.led_generator_drift import LEDGeneratorDrift
+from skmultiflow.trees.hoeffding_adaptive_tree import HAT
 
 """1. Create stream"""
-stream = FileStream('../../../datasets/electricity_final.csv', target_idx=-1, 
-                    n_targets=1, cat_features_idx=[0, 2, 4, 6, 8])
+stream = LEDGeneratorDrift(has_noise=False, noise_percentage=0.0, n_drift_features=0)
 
 stream.prepare_for_use()
 
