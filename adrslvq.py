@@ -69,52 +69,12 @@ class ARSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
         return self.w_
 
     def _optimize(self, x, y, random_state): 
-            """                 
-            n_data, n_dim = x.shape
-            nb_prototypes = self.c_w_.size
-            prototypes = self.w_.reshape(nb_prototypes, n_dim)
-
-            for i in range(n_data):
-                xi = x[i]
-                c_xi = y[i]
-                for j in range(prototypes.shape[0]):
-                    d = (xi - prototypes[j])
-                    
-                    if self.c_w_[j] == c_xi:
-                        gradient = (self._p(j, xi, prototypes=self.w_, y=c_xi) -
-                                     self._p(j, xi, prototypes=self.w_)) * d
-                    else:
-                        gradient = self._p(j, xi, prototypes=self.w_) * d
-                    
-                    # calc adaptive decay rate    
-                    self.decay_rate[j] = np.minimum(np.absolute((gradient / np.absolute(self.squared_mean_gradient[j] + self.epsilon)) - \
-                        (self.squared_mean_gradient[j] / np.absolute(gradient + self.epsilon))), 0.999)
-                    
-                     # Accumulate gradient
-                    self.squared_mean_gradient[j] = self.decay_rate[j] * self.squared_mean_gradient[j] + \
-                                (1 - self.decay_rate[j]) * gradient ** 2
-                    
-                    # Compute update/step
-                    step = ((self.squared_mean_step[j] + self.epsilon) / \
-                              (self.squared_mean_gradient[j] + self.epsilon)) ** 0.5 * gradient
-                    print(self.decay_rate)
-                    # Accumulate updates
-                    self.squared_mean_step[j] = self.decay_rate[j] * self.squared_mean_step[j] + \
-                    (1 - self.decay_rate[j]) * step ** 2
-                    
-                    # Attract/Distract prototype to/from data point
-                    if self.c_w_[j] == c_xi:
-                        self.w_[j] += step
-                    else:
-                        self.w_[j] -= step """
-                        
             """Implementation of RMSprop"""
             n_data, n_dim = x.shape
             nb_prototypes = self.c_w_.size
             prototypes = self.w_.reshape(nb_prototypes, n_dim)
 
             for i in range(n_data):
-#                print(self.decay_rate)
                 xi = x[i]
                 c_xi = y[i]
                 for j in range(prototypes.shape[0]):
@@ -133,12 +93,16 @@ class ARSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
 #                    self.decay_rate[j] = np.minimum(1 + \
 #                                   (self._costf(j=j, x=gradient, w=self.old_gradient[j])),
 #                                   0.999)
-
+                    # testing cost function or euclidean distance
+                    # when gradient is much different from old gradients, the old gradients get
+                    # weakend and the current gradient counts more
                     dec_rate = np.minimum(np.absolute(self._costf(j=j, x=gradient, 
-                                                           w=self.old_gradient[j])),
+                                                           w=self.squared_mean_gradient[j])),
                                    0.9)
+                            
+#                    euclid_distance = np.sqrt(np.power(gradient - self.squared_mean_gradient[j], 2))
+#                    print(euclid_distance)
                     self.decay_rate[j] = 1 - dec_rate - 1e-8
-#                    print(self._costf(j=j, x=gradient, w=self.old_gradient[j]))
 #                    print(self.decay_rate[j])
                     
                     # Accumulate gradient
@@ -152,9 +116,7 @@ class ARSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                     else: 
                         self.w_[j] -= (self.learning_rate / ((self.squared_mean_gradient[j] + \
                                self.epsilon) ** 0.5)) * gradient * d
-                               
-                    self.old_gradient[j] = gradient
-                    
+                                                   
     def _costf(self, x, w, **kwargs):
         d = (x - w)[np.newaxis].T 
         d = d.T.dot(d) 
@@ -338,7 +300,6 @@ class ARSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
             # Next two lines are Init for Adadelta/RMSprop
             self.squared_mean_gradient = np.zeros_like(self.w_)
             self.squared_mean_step = np.zeros_like(self.w_)
-            self.old_gradient = np.zeros_like(self.w_)
             self.initial_fit = False
 
         return train_set, train_lab, random_state
