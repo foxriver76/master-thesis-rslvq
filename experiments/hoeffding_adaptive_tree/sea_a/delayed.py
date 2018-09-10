@@ -8,7 +8,7 @@ Created on Mon Aug 13 08:53:06 2018
 from skmultiflow.evaluation.evaluate_holdout import EvaluateHoldout
 from skmultiflow.data import SEAGenerator
 from skmultiflow.data.concept_drift_stream import ConceptDriftStream
-from skmultiflow.classification.trees.hoeffding_adaptive_tree import HAT
+from skmultiflow.trees.hoeffding_adaptive_tree import HAT
 
 """1. Create stream"""
 stream = ConceptDriftStream(stream=SEAGenerator(random_state=112, noise_percentage=0.1), 

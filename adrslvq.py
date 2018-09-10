@@ -102,7 +102,7 @@ class ARSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                             
 #                    euclid_distance = np.sqrt(np.power(gradient - self.squared_mean_gradient[j], 2))
 #                    print(euclid_distance)
-                    self.decay_rate[j] = 1 - dec_rate - 1e-8
+                    self.decay_rate[j] = 1.0 - dec_rate
 #                    print(self.decay_rate[j])
                     
                     # Accumulate gradient

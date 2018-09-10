@@ -8,7 +8,7 @@ Created on Mon Aug 13 08:53:06 2018
 from skmultiflow.evaluation.evaluate_holdout import EvaluateHoldout
 from skmultiflow.data import SEAGenerator
 from skmultiflow.data.concept_drift_stream import ConceptDriftStream
-from rslvq_stream import RSLVQ
+from skmultiflow.trees.hoeffding_tree import HoeffdingTree
 
 """1. Create stream"""
 stream = ConceptDriftStream(stream=SEAGenerator(random_state=112, noise_percentage=0.1), 
@@ -22,7 +22,7 @@ stream = ConceptDriftStream(stream=SEAGenerator(random_state=112, noise_percenta
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = RSLVQ(prototypes_per_class=2, gradient_descent='SGD', sigma=5.0) # optimized
+clf = HoeffdingTree(split_criterion='info_gain')
 
 """3. Setup evaluator"""
 evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max_time=1000,

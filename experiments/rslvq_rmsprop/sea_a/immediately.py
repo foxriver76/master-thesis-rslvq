@@ -23,7 +23,7 @@ stream = ConceptDriftStream(stream=SEAGenerator(random_state=112, noise_percenta
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = RSLVQ(prototypes_per_class=1, gradient_descent='RMSprop', sigma=1.0) #optimized
+clf = RSLVQ(prototypes_per_class=1, gradient_descent='RMSprop', sigma=5.0, learning_rate=0.001) #optimized
 
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,

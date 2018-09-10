@@ -9,7 +9,7 @@ Created on Mon Aug 13 08:52:32 2018
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
 from skmultiflow.data import SEAGenerator
 from skmultiflow.data.concept_drift_stream import ConceptDriftStream
-from skmultiflow.classification.trees.hoeffding_adaptive_tree import HAT
+from skmultiflow.trees.hoeffding_adaptive_tree import HAT
 
 """1. Create stream"""
 stream = ConceptDriftStream(stream=SEAGenerator(random_state=112, noise_percentage=0.1), 
@@ -28,7 +28,7 @@ clf = HAT(split_criterion='info_gain')
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,
                                 pretrain_size=1,
-                                max_samples=100000,
+                                max_samples=1000000,
                                 metrics=['performance', 'kappa_t', 'kappa_m', 'kappa'],
                                 output_file=None)
 

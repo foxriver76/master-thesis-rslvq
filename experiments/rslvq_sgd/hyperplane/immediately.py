@@ -7,22 +7,16 @@ Created on Mon Aug 13 08:52:32 2018
 """
 
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
-from skmultiflow.data import SEAGenerator
-from skmultiflow.data.concept_drift_stream import ConceptDriftStream
-from skmultiflow.bayes.naive_bayes import NaiveBayes
+from skmultiflow.data.hyper_plane_generator import HyperplaneGenerator
+from rslvq_stream import RSLVQ
 
 """1. Create stream"""
-stream = ConceptDriftStream(stream=SEAGenerator(random_state=112, noise_percentage=0.1), 
-                            drift_stream=SEAGenerator(random_state=112, 
-                                                          classification_function=1, noise_percentage=0.1),
-                            random_state=None,
-                            position=250000,
-                            width=50000)
+stream = HyperplaneGenerator(mag_change=0.001, noise_percentage=0.1)
 
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = NaiveBayes()
+clf = RSLVQ(prototypes_per_class=1, sigma=1.0, gradient_descent='SGD') # optimized
 
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,

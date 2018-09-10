@@ -6,22 +6,16 @@ Created on Mon Aug 13 08:53:06 2018
 @author: moritz
 """
 from skmultiflow.evaluation.evaluate_holdout import EvaluateHoldout
-from skmultiflow.data import SEAGenerator
-from skmultiflow.data.concept_drift_stream import ConceptDriftStream
+from skmultiflow.data.hyper_plane_generator import HyperplaneGenerator
 from rslvq_stream import RSLVQ
 
 """1. Create stream"""
-stream = ConceptDriftStream(stream=SEAGenerator(random_state=112, noise_percentage=0.1), 
-                            drift_stream=SEAGenerator(random_state=112, 
-                                                          classification_function=1, noise_percentage=0.1),
-                            random_state=None,
-                            position=250000,
-                            width=50000)
+stream = HyperplaneGenerator(mag_change=0.001, noise_percentage=0.1)
 
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = RSLVQ(prototypes_per_class=1, gradient_descent='RMSprop', sigma=5.0, learning_rate=0.001) #optimized
+clf = RSLVQ(prototypes_per_class=1, sigma=1.0, gradient_descent='Adadelta', decay_rate=0.999) # optimized
 
 """3. Setup evaluator"""
 evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max_time=1000,
@@ -33,4 +27,4 @@ evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max
 
 
 """4. Run evaluator"""
-evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQ SGD'])
+evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQ ADA'])

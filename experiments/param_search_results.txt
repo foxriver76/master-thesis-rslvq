@@ -96,3 +96,31 @@ Best score: 0.89753
 Best param: {"decay_rate": 0.9, "gradient_descent": "Adadelta", "prototypes_per_class": 1, "sigma": 1.0}
 Test Accuracy: 0.89890 
 
+--------------------------------------------------
+SEA - RSLVQ SGD
+
+Best score: 0.89810 
+Best param: {"gradient_descent": "RMSprop", "learning_rate": 0.001, "prototypes_per_class": 1, "sigma": 5.0}
+Test Accuracy: 0.89917 
+
+--------------------------------------------------
+AGRAWAL - RSLVQ SGD
+
+Best score: 0.55322 
+Best param: {"gradient_descent": "SGD", "prototypes_per_class": 1, "sigma": 1.0}
+Test Accuracy: 0.55322 
+
+--------------------------------------------------
+AGRAWAL - RSLVQ SGD
+
+Best score: 0.54988 
+Best param: {"decay_rate": 0.9, "gradient_descent": "Adadelta", "prototypes_per_class": 1, "sigma": 1.0}
+Test Accuracy: 0.54988 
+
+--------------------------------------------------
+AGRAWAL - RSLVQ SGD
+
+Best score: 0.73200 
+Best param: {"gradient_descent": "RMSprop", "learning_rate": 0.001, "prototypes_per_class": 1, "sigma": 1.0}
+Test Accuracy: 0.73200 
+

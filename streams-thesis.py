@@ -19,14 +19,14 @@ from rslvq_stream import RSLVQ
 from adrslvq import ARSLVQ
 
 """init stream"""
-stream = FileStream('datasets/poker_final.csv', target_idx=-1,
-                    n_targets=1, cat_features_idx=[0, 2, 4, 6, 8])
+#stream = FileStream('datasets/poker_final.csv', target_idx=-1,
+#                    n_targets=1, cat_features_idx=[0, 2, 4, 6, 8])
 #stream = AGRAWALGenerator()
 #stream = ConceptDriftStream(stream=SEAGenerator(classification_function=0), 
 #                            drift_stream=SEAGenerator(classification_function=2),
 #                            position=0,
 #                            width=50000)
-#stream = HyperplaneGenerator(mag_change=0.5, n_drift_features=5, sigma_percentage=0.5)
+stream = HyperplaneGenerator(mag_change=0.5, n_drift_features=5, sigma_percentage=0.5)
 #stream = RandomTreeGenerator()
 #stream = FileStream('datasets/electricity_final.csv', target_idx=-1)
 #stream = FileStream('datasets/gmsc_final.csv', target_idx=-1)
