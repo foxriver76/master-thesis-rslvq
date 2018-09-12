@@ -6,12 +6,11 @@ Created on Mon Aug 13 08:53:06 2018
 @author: moritz
 """
 from skmultiflow.evaluation.evaluate_holdout import EvaluateHoldout
-from skmultiflow.data.file_stream import FileStream
-from skmultiflow.classification.trees.hoeffding_adaptive_tree import HAT
+from skmultiflow.data.random_tree_generator import RandomTreeGenerator
+from skmultiflow.trees.hoeffding_adaptive_tree import HAT
 
 """1. Create stream"""
-stream = FileStream('../../../datasets/electricity_final.csv', target_idx=-1, 
-                    n_targets=1, cat_features_idx=[0, 2, 4, 6, 8])
+stream = RandomTreeGenerator()
 
 stream.prepare_for_use()
 

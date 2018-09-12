@@ -96,7 +96,7 @@ class ARSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                     # testing cost function or euclidean distance
                     # when gradient is much different from old gradients, the old gradients get
                     # weakend and the current gradient counts more
-                    dec_rate = np.minimum(np.absolute(self._costf(j=j, x=gradient, 
+                    dec_rate = np.minimum(np.absolute(self._costf(j=j, x=gradient**2, 
                                                            w=self.squared_mean_gradient[j])),
                                    0.9)
                             
