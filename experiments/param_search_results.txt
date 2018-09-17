@@ -145,3 +145,31 @@ Best score: 0.73273
 Best param: {"gradient_descent": "RMSprop", "learning_rate": 0.001, "prototypes_per_class": 8, "sigma": 0.5}
 Test Accuracy: 0.75210 
 
+--------------------------------------------------
+RBF_IF - RSLVQ SGD
+
+Best score: 0.51053 
+Best param: {"gradient_descent": "SGD", "prototypes_per_class": 2, "sigma": 3.0}
+Test Accuracy: 0.51460 
+
+--------------------------------------------------
+RBF_IM - RSLVQ SGD
+
+Best score: 0.60590 
+Best param: {"gradient_descent": "SGD", "prototypes_per_class": 1, "sigma": 1.0}
+Test Accuracy: 0.60647 
+
+--------------------------------------------------
+RBF_IF - RSLVQ ADA
+
+Best score: 0.70217 
+Best param: {"decay_rate": 0.7, "gradient_descent": "Adadelta", "prototypes_per_class": 2, "sigma": 3.0}
+Test Accuracy: 0.70163 
+
+--------------------------------------------------
+RBF_IF - RSLVQ ADA
+
+Best score: 0.67350 
+Best param: {"decay_rate": 0.9, "gradient_descent": "Adadelta", "prototypes_per_class": 10, "sigma": 2.0}
+Test Accuracy: 0.67473 
+

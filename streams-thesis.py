@@ -32,7 +32,6 @@ from adrslvq import ARSLVQ
 #stream = FileStream('datasets/gmsc_final.csv', target_idx=-1)
 stream = RandomRBFGeneratorDrift(change_speed=0.3)
 
-
 stream.prepare_for_use()
 
 """init clf"""

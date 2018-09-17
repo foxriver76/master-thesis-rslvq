@@ -5,24 +5,24 @@ Created on Mon Jun 25 08:26:04 2018
 @author: moritz
 """
 
-from skmultiflow.data.generators.waveform_generator import WaveformGenerator
-from skmultiflow.data.generators.random_rbf_generator_drift import RandomRBFGeneratorDrift
-from skmultiflow.data.generators.random_rbf_generator import RandomRBFGenerator
-from skmultiflow.data.generators.agrawal_generator import AGRAWALGenerator
-from skmultiflow.data.generators.sea_generator import SEAGenerator
-from skmultiflow.data.generators.sine_generator import SineGenerator
-from skmultiflow.data.generators.mixed_generator import MIXEDGenerator
-from skmultiflow.classification.trees.hoeffding_tree import HoeffdingTree
-from skmultiflow.classification.trees.arf_hoeffding_tree import ARFHoeffdingTree
+from skmultiflow.data.waveform_generator import WaveformGenerator
+from skmultiflow.data.random_rbf_generator_drift import RandomRBFGeneratorDrift
+from skmultiflow.data.random_rbf_generator import RandomRBFGenerator
+from skmultiflow.data.agrawal_generator import AGRAWALGenerator
+from skmultiflow.data.sea_generator import SEAGenerator
+from skmultiflow.data.sine_generator import SineGenerator
+from skmultiflow.data.mixed_generator import MIXEDGenerator
+from skmultiflow.trees.hoeffding_tree import HoeffdingTree
+from skmultiflow.trees.arf_hoeffding_tree import ARFHoeffdingTree
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
 from skmultiflow.evaluation.evaluate_holdout import EvaluateHoldout
-from skmultiflow.evaluation.measure_collection import ClassificationMeasurements
-from skmultiflow.classification.lazy.sam_knn import SAMKNN
-from skmultiflow.classification.lazy.knn import KNN
+#from skmultiflow.evaluation.measure_collection import ClassificationMeasurements
+from skmultiflow.lazy.sam_knn import SAMKNN
+from skmultiflow.lazy.knn import KNN
 from rslvq_stream import RSLVQ
-from skmultiflow.classification.naive_bayes import NaiveBayes
+from skmultiflow.bayes.naive_bayes import NaiveBayes
 from sklearn.linear_model import SGDClassifier
-from skmultiflow.data.generators.hyper_plane_generator import HyperplaneGenerator
+from skmultiflow.data.hyper_plane_generator import HyperplaneGenerator
 
 """1. Create a stream"""
 #stream = HyperplaneGenerator(random_state=None, n_features=10, n_drift_features=2, 
@@ -65,7 +65,7 @@ clf = HoeffdingTree() # new classifier with default params
 evaluator = EvaluatePrequential(show_plot=True, # this will also slow down the process
                                 pretrain_size=1,
                                 max_samples=5000,
-                                metrics=['performance', 'kappa', 'true_vs_predicts']) # eval parameter
+                                metrics=['performance', 'kappa']) # eval parameter
 #evaluator = EvaluateHoldout(max_samples=1500000, batch_size=1, n_wait=10000, max_time=1000,
 #                                 output_file=None, show_plot=True, metrics=['kappa', 
 #                                                                            'performance',

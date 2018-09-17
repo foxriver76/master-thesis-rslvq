@@ -22,7 +22,7 @@ clf = RSLVQ()
 
 """Specify possible params"""
 ppt_range = [1, 2, 4, 8, 10, 12, 20]
-sigma_range = [1.0, 2.0, 3.0, 5.0]
+sigma_range = [0.5, 1.0, 2.0, 3.0, 5.0]
 
 
 param_grid = [{'sigma': sigma_range,
@@ -55,7 +55,7 @@ accuracy = clf.score(X, y)
 file = open('../../param_search_results.txt', 'a+')
 
 file.write(50 * '-')
-file.write('\nAGRAWAL - RSLVQ SGD\n')
+file.write('\nRBF_IM - RSLVQ SGD\n')
 file.write('\nBest score: %.5f ' % (gs.best_score_))
 file.write('\nBest param: %s' % (json.dumps(gs.best_params_)))
 file.write('\nTest Accuracy: %.5f \n\n' % (accuracy))

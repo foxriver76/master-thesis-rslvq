@@ -305,8 +305,9 @@ class RSLVQ(ClassifierMixin, StreamModel, BaseEstimator):
                 self.c_w_ = np.empty([nb_ppc.sum()], dtype=self.classes_.dtype)
             pos = 0
             for actClass in range(len(self.classes_)):
+
                 nb_prot = nb_ppc[actClass] # nb_ppc:  # prototypes per class
-                if(self.protos_initialized[actClass] == 0 and actClass in unique_labels(train_lab)):
+                if(self.protos_initialized[actClass] == 0 and self.classes_[actClass] in unique_labels(train_lab)):
                     mean = np.mean(
                         train_set[train_lab == self.classes_[actClass], :], 0)
                     self.w_[pos:pos + nb_prot] = mean + (
