@@ -7,21 +7,26 @@ Created on Mon Aug 13 08:52:32 2018
 """
 
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
-from skmultiflow.data.random_rbf_generator_drift import RandomRBFGeneratorDrift
-from skmultiflow.trees.hoeffding_adaptive_tree import HAT
+from skmultiflow.data.led_generator_drift import LEDGeneratorDrift
+from rslvq_stream import RSLVQ
+from skmultiflow.data.concept_drift_stream import ConceptDriftStream
 
 """1. Create stream"""
-stream = RandomRBFGeneratorDrift(change_speed=0.0001)
+stream = ConceptDriftStream(stream=LEDGeneratorDrift(has_noise=False, noise_percentage=0.0, n_drift_features=3),
+                            drift_stream=LEDGeneratorDrift(has_noise=False, noise_percentage=0.0, n_drift_features=7),
+                            random_state=None,
+                            position=250000,
+                            width=50000)
 
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = HAT(split_criterion='info_gain')
+clf = RSLVQ()
 
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,
                                 pretrain_size=1,
-                                max_samples=1000000,
+                                max_samples=100000,
                                 metrics=['performance', 'kappa_t', 'kappa_m', 'kappa'],
                                 output_file=None)
 

@@ -8,7 +8,7 @@ Created on Mon Aug 13 08:52:32 2018
 
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
 from skmultiflow.data.led_generator_drift import LEDGeneratorDrift
-from skmultiflow.trees.hoeffding_adaptive_tree import HAT
+from rslvq_stream import RSLVQ
 from skmultiflow.data.concept_drift_stream import ConceptDriftStream
 
 """1. Create stream"""
@@ -22,7 +22,7 @@ stream = ConceptDriftStream(stream=LEDGeneratorDrift(has_noise=False, noise_perc
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = HAT(split_criterion='info_gain')
+clf = RSLVQ(gradient_descent='SGD')
 
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,

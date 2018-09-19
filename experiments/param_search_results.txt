@@ -173,3 +173,17 @@ Best score: 0.67350
 Best param: {"decay_rate": 0.9, "gradient_descent": "Adadelta", "prototypes_per_class": 10, "sigma": 2.0}
 Test Accuracy: 0.67473 
 
+--------------------------------------------------
+RBF_IF - RSLVQ SGD
+
+Best score: 0.65103 
+Best param: {"gradient_descent": "RMSprop", "learning_rate": 0.001, "prototypes_per_class": 1, "sigma": 5.0}
+Test Accuracy: 0.65170 
+
+--------------------------------------------------
+AGRAWAL - RSLVQ SGD
+
+Best score: 0.64537 
+Best param: {"gradient_descent": "RMSprop", "learning_rate": 0.001, "prototypes_per_class": 1, "sigma": 3.0}
+Test Accuracy: 0.66083 
+

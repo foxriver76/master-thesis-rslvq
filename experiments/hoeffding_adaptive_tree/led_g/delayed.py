@@ -6,12 +6,16 @@ Created on Mon Aug 13 08:53:06 2018
 @author: moritz
 """
 from skmultiflow.evaluation.evaluate_holdout import EvaluateHoldout
-from skmultiflow.data.file_stream import FileStream
+from skmultiflow.data.led_generator_drift import LEDGeneratorDrift
 from skmultiflow.classification.trees.hoeffding_adaptive_tree import HAT
+from skmultiflow.data.concept_drift_stream import ConceptDriftStream
 
 """1. Create stream"""
-stream = FileStream('../../../datasets/electricity_final.csv', target_idx=-1, 
-                    n_targets=1, cat_features_idx=[0, 2, 4, 6, 8])
+stream = ConceptDriftStream(stream=LEDGeneratorDrift(has_noise=False, noise_percentage=0.0, n_drift_features=3),
+                            drift_stream=LEDGeneratorDrift(has_noise=False, noise_percentage=0.0, n_drift_features=7),
+                            random_state=None,
+                            position=250000,
+                            width=50000)
 
 stream.prepare_for_use()
 

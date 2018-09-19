@@ -8,7 +8,7 @@ Created on Mon Aug 13 08:52:32 2018
 
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
 from skmultiflow.data.random_rbf_generator_drift import RandomRBFGeneratorDrift
-from skmultiflow.classification.trees.hoeffding_adaptive_tree import HAT
+from skmultiflow.trees.hoeffding_adaptive_tree import HAT
 
 """1. Create stream"""
 stream = RandomRBFGeneratorDrift(change_speed=0.001)
@@ -21,7 +21,7 @@ clf = HAT(split_criterion='info_gain')
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,
                                 pretrain_size=1,
-                                max_samples=100000,
+                                max_samples=1000000,
                                 metrics=['performance', 'kappa_t', 'kappa_m', 'kappa'],
                                 output_file=None)
 

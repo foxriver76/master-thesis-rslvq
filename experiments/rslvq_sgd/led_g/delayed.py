@@ -6,16 +6,21 @@ Created on Mon Aug 13 08:53:06 2018
 @author: moritz
 """
 from skmultiflow.evaluation.evaluate_holdout import EvaluateHoldout
-from skmultiflow.data.random_rbf_generator_drift import RandomRBFGeneratorDrift
-from skmultiflow.trees.hoeffding_tree import HoeffdingTree
+from skmultiflow.data.led_generator_drift import LEDGeneratorDrift
+from rslvq_stream import RSLVQ
+from skmultiflow.data.concept_drift_stream import ConceptDriftStream
 
 """1. Create stream"""
-stream = RandomRBFGeneratorDrift(change_speed=0.001)
+stream = ConceptDriftStream(stream=LEDGeneratorDrift(has_noise=False, noise_percentage=0.0, n_drift_features=3),
+                            drift_stream=LEDGeneratorDrift(has_noise=False, noise_percentage=0.0, n_drift_features=7),
+                            random_state=None,
+                            position=250000,
+                            width=50000)
 
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = HoeffdingTree(split_criterion='info_gain')
+clf = RSLVQ()
 
 """3. Setup evaluator"""
 evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max_time=1000,

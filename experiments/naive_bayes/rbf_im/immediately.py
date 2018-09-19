@@ -8,7 +8,7 @@ Created on Mon Aug 13 08:52:32 2018
 
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
 from skmultiflow.data.random_rbf_generator_drift import RandomRBFGeneratorDrift
-from skmultiflow.classification.trees.hoeffding_adaptive_tree import HAT
+from skmultiflow.bayes.naive_bayes import NaiveBayes
 
 """1. Create stream"""
 stream = RandomRBFGeneratorDrift(change_speed=0.0001)
@@ -16,7 +16,7 @@ stream = RandomRBFGeneratorDrift(change_speed=0.0001)
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = HAT(split_criterion='info_gain')
+clf = NaiveBayes()
 
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,
