@@ -21,6 +21,7 @@ stream = ConceptDriftStream(stream=LEDGeneratorDrift(has_noise=False, noise_perc
                             position=250000,
                             width=1)
 
+
 stream.prepare_for_use()
 
 X, y = stream.next_sample(batch_size=30000)
@@ -28,8 +29,8 @@ X, y = stream.next_sample(batch_size=30000)
 clf = RSLVQ()
 
 """Specify possible params"""
-ppt_range = [1]
-sigma_range = [0.5, 1.0, 2.0, 3.0, 5.0]
+ppt_range = [1, 2, 4, 8, 10, 12, 20]
+sigma_range = [1.0, 2.0, 3.0, 5.0]
 
 
 param_grid = [{'sigma': sigma_range,

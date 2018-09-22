@@ -28,13 +28,14 @@ X, y = stream.next_sample(batch_size=30000)
 clf = RSLVQ()
 
 """Specify possible params"""
-ppt_range = [1]
-sigma_range = [0.5, 1.0, 2.0, 3.0, 5.0]
-
+ppt_range = [1, 2, 4]
+sigma_range = [1.0, 2.0, 3.0, 5.0]
+learning_range = [0.001, 0.0001, 0.01, 0.1, 0.3]
 
 param_grid = [{'sigma': sigma_range,
-               'gradient_descent': ['SGD'],
-               'prototypes_per_class': ppt_range}]
+               'gradient_descent': ['RMSprop'],
+               'prototypes_per_class': ppt_range,
+                'learning_rate': learning_range}]
 
 gs = GridSearchCV(estimator=clf,
                   param_grid=param_grid,

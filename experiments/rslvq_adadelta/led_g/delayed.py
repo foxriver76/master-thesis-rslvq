@@ -14,14 +14,13 @@ from skmultiflow.data.concept_drift_stream import ConceptDriftStream
 stream = ConceptDriftStream(stream=LEDGeneratorDrift(has_noise=False, noise_percentage=0.0, n_drift_features=3),
                             drift_stream=LEDGeneratorDrift(has_noise=False, noise_percentage=0.0, n_drift_features=7),
                             random_state=None,
-                            alpha=90.0, # angle of change grade 0 - 90
                             position=250000,
-                            width=1)
+                            width=50000)
 
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = RSLVQ(gradient_descent='SGD', sigma=1.0, prototypes_per_class=1) #optimized
+clf = RSLVQ(gradient_descent='Adadelta', sigma=1.0, prototypes_per_class=1) #optimized
 
 """3. Setup evaluator"""
 evaluator = EvaluateHoldout(max_samples=1000000, batch_size=1, n_wait=10000, max_time=1000,
