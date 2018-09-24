@@ -22,7 +22,7 @@ stream = ConceptDriftStream(stream=LEDGeneratorDrift(has_noise=False, noise_perc
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = RSLVQ(gradient_descent='SGD', sigma=1.0, prototypes_per_class=1) #optimized
+clf = RSLVQ(gradient_descent='RMSprop', sigma=1.0, prototypes_per_class=1) #optimized
 
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,

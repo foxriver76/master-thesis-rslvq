@@ -12,9 +12,11 @@ from skmultiflow.data.concept_drift_stream import ConceptDriftStream
 from skmultiflow.trees.hoeffding_tree import HoeffdingTree
 
 """1. Create stream"""
-stream = ConceptDriftStream(stream=SEAGenerator(random_state=112, noise_percentage=0.1), 
+stream = ConceptDriftStream(stream=SEAGenerator(random_state=112, 
+                                                noise_percentage=0.1), 
                             drift_stream=SEAGenerator(random_state=112, 
-                                                          classification_function=2, noise_percentage=0.1),
+                                                      classification_function=2, 
+                                                      noise_percentage=0.1),
                             alpha=90.0,
                             random_state=None,
                             position=250000,
@@ -26,11 +28,12 @@ stream.prepare_for_use()
 clf = HoeffdingTree(split_criterion='info_gain')
 
 """3. Setup evaluator"""
-evaluator = EvaluatePrequential(show_plot=False,
+evaluator = EvaluatePrequential(show_plot=True,
                                 pretrain_size=1,
                                 max_samples=1000000,
-                                metrics=['performance', 'kappa_t', 'kappa_m', 'kappa'],
+                                metrics=['performance', 'kappa_t', 
+                                         'kappa_m', 'kappa'],
                                 output_file=None)
 
 """4. Run evaluator"""
-evaluator.evaluate(stream=stream, model=clf, model_names=['RSLVQ SGD'])
+evaluator.evaluate(stream=stream, model=clf, model_names=['Hoeffding Tree'])

@@ -8,7 +8,7 @@ Created on Mon Aug 13 08:52:32 2018
 
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
 from skmultiflow.data.led_generator_drift import LEDGeneratorDrift
-from rslvq_stream import RSLVQ
+from skmultiflow.bayes.naive_bayes import NaiveBayes
 from skmultiflow.data.concept_drift_stream import ConceptDriftStream
 
 """1. Create stream"""
@@ -21,7 +21,7 @@ stream = ConceptDriftStream(stream=LEDGeneratorDrift(has_noise=False, noise_perc
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = RSLVQ(gradient_descent='SGD', sigma=1.0, prototypes_per_class=1) #optimized
+clf = NaiveBayes()
 
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,

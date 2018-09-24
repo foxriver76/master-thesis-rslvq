@@ -7,7 +7,7 @@ Created on Mon Aug 13 08:53:06 2018
 """
 from skmultiflow.evaluation.evaluate_holdout import EvaluateHoldout
 from skmultiflow.data.led_generator_drift import LEDGeneratorDrift
-from skmultiflow.classification.trees.hoeffding_adaptive_tree import HAT
+from skmultiflow.trees.hoeffding_adaptive_tree import HAT
 from skmultiflow.data.concept_drift_stream import ConceptDriftStream
 
 """1. Create stream"""
