@@ -8,7 +8,7 @@ Created on Mon Aug 13 08:52:32 2018
 
 from skmultiflow.evaluation.evaluate_prequential import EvaluatePrequential
 from skmultiflow.data.random_rbf_generator_drift import RandomRBFGeneratorDrift
-from rslvq_stream import RSLVQ
+from adrslvq import ARSLVQ
 
 """1. Create stream"""
 stream = RandomRBFGeneratorDrift(change_speed=0.001)
@@ -16,7 +16,7 @@ stream = RandomRBFGeneratorDrift(change_speed=0.001)
 stream.prepare_for_use()
 
 """2. Create classifier"""
-clf = RSLVQ(prototypes_per_class=1, learning_rate=0.001, gradient_descent='RMSprop', sigma=5.0) # optimized
+clf = ARSLVQ(prototypes_per_class=1, learning_rate=0.0001, sigma=5.0) # optimized
 
 """3. Setup evaluator"""
 evaluator = EvaluatePrequential(show_plot=False,
