@@ -1,6 +1,11 @@
 # multiflow-rslvq
 An implementation of the Robust Soft Learning Vector Quantizatin, which works with the scikit-multiflow streaming data framework.
 
+## Information on Concept Drift
+Width indicates the width of a gradual drift. So if width is bigger than 1, the drift is gradual
+otherwise abrupt. E. g. if width is set to 1000 the old and the new streams are mixed for 1000
+instances. The chance of getting the old stream is determiend by a sigmoid function.
+
 ## Known Issues
 The following issues could be recognized:
 
@@ -27,13 +32,7 @@ The following issues could be recognized:
 
 ## To-Dos
 
-For To-Dos check the following tasks:
-   
-   - Add common streams (see page 12 of Bifet: Adaptive random forests for evolving data stream classification)
-   - Do grid search for params of every algorithm per stream
-   - When found good params, comparsion between the algos per stream
-   - Algorithms: Hoeffding Tree, Adaptive Hoeffding Tree, Naive Bayes and our three RSLVQ versions
-   
+Absolutley nuttin   
    
 ## Evaluation Tables
 

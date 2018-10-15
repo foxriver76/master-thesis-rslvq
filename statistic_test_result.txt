@@ -1,0 +1,56 @@
+--------------------------------------------------
+2018-10-10 11:17:55.638392
+Compared algorithms: ['ARSLVQ', 'RSLVQ SGD', 'RSLVQ ADA', 'RSLVQ RMS', 'Naive Bayes', 'Hoeffding Tree', 'Adaptive Hoeffding Tree']
+Friedman p-value: 0.00178852 --> Significant
+
+Bonferroni Dunn Test: 
+
+ARSLVQ vs RSLVQ SGD:                       p: 0.03891515056964767	 Z: 2.0650829690772547
+ARSLVQ vs Hoeffding Tree:                  p: 0.09110195244782648	 Z: 1.6896133383359366
+ARSLVQ vs Naive Bayes:                     p: 0.1647605013940483	 Z: 1.38923763374288
+ARSLVQ vs RSLVQ ADA:                       p: 0.4991388476133314	 Z: 0.6758453353343752
+ARSLVQ vs Adaptive Hoeffding Tree:         p: 0.4991388476133314	 Z: 0.6758453353343752
+ARSLVQ vs RSLVQ RMS:                       p: 0.9103152664133529	 Z: 0.11264088922239512
+
+RSLVQ SGD vs Hoeffding Tree:               p: 0.00017355177880684636	 Z: 3.7546963074131914
+RSLVQ SGD vs RSLVQ ADA:                    p: 0.006126587439040154	 Z: 2.74092830441163
+RSLVQ SGD vs Adaptive Hoeffding Tree:      p: 0.006126587439040154	 Z: 2.74092830441163
+RSLVQ SGD vs ARSLVQ:                       p: 0.03891515056964767	 Z: 2.0650829690772547
+RSLVQ SGD vs RSLVQ RMS:                    p: 0.05088574121639122	 Z: 1.9524420798548596
+RSLVQ SGD vs Naive Bayes:                  p: 0.4991388476133318	 Z: 0.6758453353343747
+
+RSLVQ ADA vs RSLVQ SGD:                    p: 0.006126587439040154	 Z: 2.74092830441163
+RSLVQ ADA vs Naive Bayes:                  p: 0.03891515056964767	 Z: 2.065082969077255
+RSLVQ ADA vs Hoeffding Tree:               p: 0.31069346655891295	 Z: 1.0137680030015614
+RSLVQ ADA vs RSLVQ RMS:                    p: 0.43041235311545334	 Z: 0.7884862245567703
+RSLVQ ADA vs ARSLVQ:                       p: 0.4991388476133314	 Z: 0.6758453353343752
+RSLVQ ADA vs Adaptive Hoeffding Tree:      p: 1.0	 Z: 0.0
+
+RSLVQ RMS vs RSLVQ SGD:                    p: 0.05088574121639122	 Z: 1.9524420798548596
+RSLVQ RMS vs Hoeffding Tree:               p: 0.07150541644487451	 Z: 1.8022542275583318
+RSLVQ RMS vs Naive Bayes:                  p: 0.20174465180628953	 Z: 1.2765967445204849
+RSLVQ RMS vs RSLVQ ADA:                    p: 0.43041235311545334	 Z: 0.7884862245567703
+RSLVQ RMS vs Adaptive Hoeffding Tree:      p: 0.43041235311545334	 Z: 0.7884862245567703
+RSLVQ RMS vs ARSLVQ:                       p: 0.9103152664133529	 Z: 0.11264088922239512
+
+Naive Bayes vs Hoeffding Tree:             p: 0.0020780060175120685	 Z: 3.0788509720788166
+Naive Bayes vs RSLVQ ADA:                  p: 0.03891515056964767	 Z: 2.065082969077255
+Naive Bayes vs Adaptive Hoeffding Tree:    p: 0.03891515056964767	 Z: 2.065082969077255
+Naive Bayes vs ARSLVQ:                     p: 0.1647605013940483	 Z: 1.38923763374288
+Naive Bayes vs RSLVQ RMS:                  p: 0.20174465180628953	 Z: 1.2765967445204849
+Naive Bayes vs RSLVQ SGD:                  p: 0.4991388476133318	 Z: 0.6758453353343747
+
+Hoeffding Tree vs RSLVQ SGD:               p: 0.00017355177880684636	 Z: 3.7546963074131914
+Hoeffding Tree vs Naive Bayes:             p: 0.0020780060175120685	 Z: 3.0788509720788166
+Hoeffding Tree vs RSLVQ RMS:               p: 0.07150541644487451	 Z: 1.8022542275583318
+Hoeffding Tree vs ARSLVQ:                  p: 0.09110195244782648	 Z: 1.6896133383359366
+Hoeffding Tree vs RSLVQ ADA:               p: 0.31069346655891295	 Z: 1.0137680030015614
+Hoeffding Tree vs Adaptive Hoeffding Tree: p: 0.31069346655891295	 Z: 1.0137680030015614
+
+Adaptive Hoeffding Tree vs RSLVQ SGD:      p: 0.006126587439040154	 Z: 2.74092830441163
+Adaptive Hoeffding Tree vs Naive Bayes:    p: 0.03891515056964767	 Z: 2.065082969077255
+Adaptive Hoeffding Tree vs Hoeffding Tree: p: 0.31069346655891295	 Z: 1.0137680030015614
+Adaptive Hoeffding Tree vs RSLVQ RMS:      p: 0.43041235311545334	 Z: 0.7884862245567703
+Adaptive Hoeffding Tree vs ARSLVQ:         p: 0.4991388476133314	 Z: 0.6758453353343752
+Adaptive Hoeffding Tree vs RSLVQ ADA:      p: 1.0	 Z: 0.0
+
